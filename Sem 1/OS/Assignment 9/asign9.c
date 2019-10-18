@@ -8,20 +8,24 @@ PHONEBOOK USING FILE HANDLING BY LOW LEVEL SYSTEM COMMANADS
 #include <fcntl.h>
 #include <string.h>
 
+//structure to handle data
 typedef struct dat{
 	char name[20];
 	char phno[11];
 	char addr[50];
 }d;
 
+//function to open file descriptor for input
 int openIN(char fnme[20]){
 	return open(fnme, O_CREAT | O_RDWR | O_APPEND, 0666);	
 }
 
+//function to open file descriptor for read only
 int openOUT(char fnme[20]){
 	return open(fnme, O_RDONLY, 0666);
 }
 
+//function to accept data
 void accept(int in){	
 	d data;
 	printf("\nEnter data:\n");
@@ -39,6 +43,7 @@ void accept(int in){
 	close(in);
 }
 
+//function to display data
 void display(int out){
 	d data;
 	int flag = 0;
@@ -55,6 +60,7 @@ void display(int out){
 	close(out);
 }
 
+//function to search data
 int search(char key[50],int srch,int out){
 	int flag = 0;
 	d data;
@@ -93,6 +99,7 @@ int search(char key[50],int srch,int out){
 	return 0;
 }
 
+//function to modify data
 int modify(char key[50],int mdch,int out,int tmp,char fnme[20],char rekey[50]){
 	int flag = 0;
 	d data;
@@ -139,7 +146,7 @@ int modify(char key[50],int mdch,int out,int tmp,char fnme[20],char rekey[50]){
 	return 0;
 }
 
-
+//function to delete data
 int del(char key[50],int mdch,int out,int tmp,char fnme[20]){
 	int flag = 0;
 	d data;
@@ -186,8 +193,7 @@ int del(char key[50],int mdch,int out,int tmp,char fnme[20]){
 	return 0;
 }
 
-
-
+//main function
 int main(){
 
 	int ch,in = 0,out = 0,tmp = 0, srch = 1,mdch = 1;
