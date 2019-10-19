@@ -74,7 +74,6 @@ void main()
 			
 		printf("\n\n in parent pid is :%d\n",getpid());
 	
-	
 	}
 	
 
