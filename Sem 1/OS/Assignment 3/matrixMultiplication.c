@@ -62,7 +62,7 @@ int main()
 		//validation for multiplication
 		if(c1!=r2)
 		{
-			printf("The matrix you are trying to use are inciompatible for multiplication\nEnter again\n");
+			printf("The matrix you are trying to use are incompatible for multiplication\nEnter again\n");
 			flag=0;
 		}
 	}
