@@ -1,0 +1,78 @@
+.txtbox {
+	background-color: rgb(240,240,240);
+	color: black;
+	width: 800px;
+	border: 1px solid black;
+	border-radius: 15px;
+	box-shadow: 0 0 20px rgba(0,0,0,1);
+	padding: 50px;
+}
+.txtbox:hover{
+	background-color: rgb(255,255,255);
+}
+.txtbox .justify{
+	text-align: justify;
+	font-size: 20px;
+}
+.inputbox{
+	border-radius: 10px;
+	color: black;
+	padding: 20px 30px;
+	border: 1px solid #ccc;
+	min-width: 45vw;
+	text-decoration: none;
+	display: inline-block;
+	margin: 4px 2px;	
+}
+.inputbox:hover{
+	display: inline-block;
+	box-shadow: 0 0 20px rgba(0,0,0,0.6);
+	/*background-color: rgb(255,255,255);*/
+}
+label{
+	/*padding-left:14vh;*/
+	float: left;
+}
+legend,fieldset{
+	border: 1px solid black;
+	border-radius: 10px;
+	padding: 2vh;
+}
+.inputbox:focus{
+	outline: none;
+}
+
+.logbtn{
+	background: rgb(255,255,255); 
+	border: 1px solid #2AA600;
+	border-radius: 10px;
+	color: rgb(0, 0, 0);
+	padding: 10px 15px;
+	min-width: 120px;
+	text-decoration: none;
+	display: inline-block;
+	margin: 4px 2px;
+}
+
+.logbtn:hover{
+	background: #2AA600;
+	color: rgb(255, 255, 255);
+}
+
+.resetbtn{
+	/*float: right;*/
+	border-radius: 10px;
+	border: 1px solid red;
+	color: red;
+	padding: 10px 15px;
+	min-width: 120px;
+	text-decoration: none;
+	display: inline-block;
+	margin: 4px 2px;	
+	background-color: white;
+}
+.resetbtn:hover{
+	background-color: red;
+	color: white;
+	border:none;
+}

@@ -1,0 +1,176 @@
+<html>
+<head>
+	<title>SCHOOL WALA</title>
+	<link rel="stylesheet" type="text/css" href="./css/common.css">
+	<style>
+		input{
+			border-radius: 10px;
+			color: black;
+			padding: 20px 30px;
+			border: 1px solid #ccc;
+			min-width: 45vw;
+			text-decoration: none;
+			display: inline-block;
+			margin: 4px 2px;	
+		}
+		input:hover{
+			display: inline-block;
+			box-shadow: 0 0 20px rgba(0,0,0,0.6);
+			/*background-color: rgb(255,255,255);*/
+		}
+
+		.titlelabel{
+			background: linear-gradient(140deg, #f12711 10%, #f5af19 );
+			border-radius: 10px;
+			color: white;
+			padding: 20px;
+			min-width: 150px;
+			text-decoration: none;
+			display: inline-block;
+			margin: 4px 2px;
+		}
+
+		.logbtn{
+			background: rgb(255,255,255); 
+			border: 1px solid #2AA600;
+			border-radius: 10px;
+			color: rgb(0, 0, 0);
+			padding: 10px 15px;
+			min-width: 120px;
+			text-decoration: none;
+			display: inline-block;
+			margin: 4px 2px;
+		}
+
+		.logbtn:hover{
+			background: #2AA600;
+			color: rgb(255, 255, 255);
+		}
+
+		.resetbtn{
+			float: right;
+			border-radius: 10px;
+			border: 1px solid red;
+			color: red;
+			padding: 10px 15px;
+			min-width: 120px;
+			text-decoration: none;
+			display: inline-block;
+			margin: 4px 2px;	
+			background-color: white;
+		}
+		.resetbtnmain{
+			border-radius: 10px;
+			border: 1px solid #4169E1;
+			color: black;
+			padding: 10px 15px;
+			min-width: 120px;
+			text-decoration: none;
+			display: inline-block;
+			margin: 4px 2px;	
+			background-color: white;
+		}
+		.resetbtn:hover,.resetbtnmain:hover{
+			background-color: red;
+			color: white;
+			border:none;
+		}
+		label{
+			padding-left:14vh;
+			float: left;
+		}
+		legend,fieldset{
+			border-radius: 10px;
+			padding: 2vh;
+		}
+		input:focus, textarea:focus, select:focus{
+        	outline: none;
+    	}
+
+	</style>
+</head>
+<body>
+	<header>
+		<nav class="header">
+			<a href="index.html" class="logo"><img src="./img/logo.png" width="150px" alt="logo"></a>
+			<!-- <h2>Education Rercommendation System</h2> -->
+				<ul class="menu"> 
+						<a href="index.html">Home</a>
+						<div class="dropdown">
+							<a href="cities.html" vspace="10">Select City</a>
+							<div  class="dropdown-content">
+								<a href="pune.html">Pune</a>
+								<a href="mumbai.html">Mumbai</a>
+							</div>
+						</div>
+						<div class="dropdown">
+							<a href="trends.html">Trends</a>
+							<div  class="dropdown-content">
+								<a href="engg.html">Engineering</a>
+								<a href="science.html">Science</a>
+							</div>
+						</div>
+						<a href="online_courses.html">Online Courses</a>	
+						<a href="login.html" class="loginbtn">Login/Signup</a>	
+				</ul>
+		</nav>
+	</header>
+<br>
+
+
+	<center>
+	<!-- 	PAGE CONTENT -->
+		<div class="txtbox" >
+			<input type="button" class="titlelabel" onclick="location.href='signup.html'" value="Sign Up">
+			<input type="button" class="titlelabel" onclick="location.href='login.html'" value="Login"><br><br>
+			<!-- Login Form --><br>
+		    <form action="#" method="post">
+		   	    <fieldset id="fs1">
+		   	    	<legend>Account Details</legend>
+					<label>Login ID:*</label><br>
+					<input type="text" id="login" name="login" placeholder="Login-ID">
+					<!-- <input type="button" class="resetbtn" id="reset" onclick="resetThis('login');" name="reset" value="<--Reset"> -->
+					<br><br>
+
+					<label>Password:*</label><br>
+					<input type="password" id="password" name="pass" placeholder="Password">
+					<!-- <input type="button" class="resetbtn" id="reset" onclick="resetThis('password');" name="reset" value="<--Reset"> -->
+					<br><br>
+
+		  	  	</fieldset>
+				<br><br>
+		      <input type="submit" class="logbtn" onclick="return validate();" value="Log In">
+		      <input type="reset" class="resetbtnmain" value="Reset All">
+		    </form>
+		</div>
+	</center>
+
+<script>
+	//FUNCTION TO RESET A SINGLE FIELD
+	function resetThis(arg) {
+		//console.log(arg);
+		document.getElementById(arg).value=null;
+	}
+
+	//FUNCTION TO VALIDATE INPUTS ON SUBMIT
+	function validate(){
+		var login = document.getElementById("login").value;
+		var pas = document.getElementById("password").value;
+
+		//no field should be blank
+		if(login.length==0 || pas.length==0)
+		{
+			alert("All fields required");
+			return false;
+		} 
+
+		//validate pass
+		if(pas.length<8 || pas2.length<8){
+			alert("Incorrect Password!");		
+			return false;
+		}
+	}
+</script>
+
+</body>
+</html>

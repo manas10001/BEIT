@@ -1,0 +1,221 @@
+<html>
+<head>
+	<title>SCHOOL WALA</title>
+	<link rel="stylesheet" type="text/css" href="./css/common.css">
+	<style>
+		.inputstyle{
+			border-radius: 10px;
+			color: black;
+			padding: 20px 30px;
+			border: 1px solid #ccc;
+			min-width: 45vw;
+			text-decoration: none;
+			display: inline-block;
+			margin: 4px 2px;	
+		}
+		.inputstyle:hover{
+			display: inline-block;
+			box-shadow: 0 0 20px rgba(0,0,0,0.6);
+			/*min-width: 37vw;*/
+			border: 1px solid orange;
+		}
+
+		select{
+			border-radius: 10px;
+			color: black;
+			padding: 20px 30px;
+			border: 1px solid #ccc;
+			min-width: 45vw;
+			text-decoration: none;
+			display: inline-block;
+			margin: 4px 2px;	
+			background: white;
+		}
+		select:hover{
+			display: inline-block;
+			box-shadow: 0 0 20px rgba(0,0,0,0.6);
+			/*min-width:37vw;*/
+			border: 1px solid orange;
+		}
+
+		.signuplabel{
+			border-radius: 10px;
+			color: white;
+			padding: 20px;
+			min-width: 150px;
+			text-decoration: none;
+			display: inline-block;
+			margin: 4px 2px;	
+			background: linear-gradient(140deg, #f12711 10%, #f5af19 );
+		}
+		.signupbtn{
+			background: rgb(255,255,255); 
+			border: 1px solid #2AA600;
+			border-radius: 10px;
+			color: rgb(0, 0, 0);
+			padding: 10px 15px;
+			min-width: 120px;
+			text-decoration: none;
+			display: inline-block;
+			margin: 4px 2px;
+		}
+
+		.signupbtn:hover{
+			background: #2AA600;
+			color: rgb(255, 255, 255);
+		}
+
+		.resetbtn{
+			/*float: right;*/
+			border-radius: 10px;
+			border: 1px solid #4169E1;
+			color: black;
+			padding: 10px 15px;
+			min-width: 120px;
+			min-height: 7vh;
+			text-decoration: none;
+			display: inline-block;
+			margin: 4px 2px;	
+			background-color: white;
+		}
+		.resetbtnmain{
+			border-radius: 10px;
+			border: 1px solid #4169E1;
+			color: black;
+			padding: 10px 15px;
+			min-width: 120px;
+			text-decoration: none;
+			display: inline-block;
+			margin: 4px 2px;	
+			background-color: white;
+		}
+		.resetbtn:hover,.resetbtnmain:hover{
+			background-color: crimson;
+			color: white;
+			border:none;
+		}
+		label{
+			padding-left:3vw;
+			float: left;
+		}
+		legend,fieldset{
+			border-radius: 10px;
+			padding: 2vh;
+		}
+		input:focus, textarea:focus, select:focus{
+        	outline: none;
+    	}
+
+	</style>
+</head>
+<body>
+	<header>
+		<nav class="header">
+			<a href="index.html" class="logo"><img src="./img/logo.png" width="150px" alt="logo"></a>
+			<!-- <h2>Education Rercommendation System</h2> -->
+				<ul class="menu"> 
+						<a href="index.html">Home</a>
+						<div class="dropdown">
+							<a href="cities.html" vspace="10">Select City</a>
+							<div  class="dropdown-content">
+								<a href="pune.html">Pune</a>
+								<a href="mumbai.html">Mumbai</a>
+							</div>
+						</div>
+						<div class="dropdown">
+							<a href="trends.html">Trends</a>
+							<div  class="dropdown-content">
+								<a href="engg.html">Engineering</a>
+								<a href="science.html">Science</a>
+							</div>
+						</div>
+						<a href="online_courses.html">Online Courses</a>	
+						<a href="login.html" class="loginbtn">Login/Signup</a>	
+				</ul>
+		</nav>
+	</header>
+<br>
+
+
+	<center>
+	<!-- 	PAGE CONTENT -->
+		<div class="txtbox" >
+			<input type="button" class="signuplabel" onclick="location.href='signup.html'" value="Sign Up">
+			<input type="button" class="signuplabel" onclick="location.href='login.html'" value="Login"><br><br>
+			<!-- Login Form --><br>
+		    <form action="signup.php" method="post" id="ipform">
+
+		    	<fieldset>
+					<legend>Personal details</legend>
+					<label>Name:*</label><br>
+					<input class="nam inputstyle" autocomplete="off" type="text" id="name" name="name" onkeyup="liveValidateStr('name');" placeholder="Name">
+					
+					<br><br>
+
+					<label>Gender:*</label><br>
+					<input type="radio" id="gender" name="gender" value="male" checked> Male &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  					<input type="radio" id="gender" name="gender" value="female"> Female
+					<br><br>
+
+					<label>Dirth Date:*</label><br>
+					<input class="inputstyle" autocomplete="off" type="date" id="date" name="date" placeholder="date">
+					<br><br>
+
+					<label>Home Town:*</label><br>
+					<input class="inputstyle" autocomplete="off" type="text" id="city" name="city" onkeyup="liveValidateStr('city');" placeholder="City">
+					<br><br>
+
+					<label>Pincode:*</label><br>
+					<input class="inputstyle" autocomplete="off" type="number" id="pin" name="pin" onkeyup="liveValidatePin()" placeholder="Pincode">
+
+					<br>
+					<input type="button" class="resetbtn" id="reset" onclick="var arg = ['name','gender','date','city','pin'];resetThis(arg);" name="reset" value="Reset Personal Details">
+					<br><br>
+				</fieldset>
+		   	    
+		  	  	<fieldset>
+		  	  		<legend>Professional details</legend>
+					<label>Email:*</label><br>
+					<input class="inputstyle" autocomplete="off" type="text" id="email" name="email" onkeyup="liveValidateMail();" placeholder="E-Mail ID">
+					<br><br>
+
+					<label>Mobile Number:*</label><br>
+					<input class="inputstyle" autocomplete="off" type="text" id="mob" name="mob" onkeyup="liveValidateMob();" placeholder="Mobile Number">
+					<br><br>
+					<label>Department:*</label><br>
+					<select id="dept">
+						<option class="dropdown-item" style="height:10vh;" value="select">Select Department</option>
+						<option class="dropdown-item" value="male">Information Technology</option>
+						<option class="dropdown-item" value="female">Computer</option>
+					</select>
+					<br>
+					<input type="button" class="resetbtn" id="reset" onclick="var arg = ['email','mob','dept'];resetThis(arg);" name="reset" value="Reset Professional Details">
+					<br><br>
+					
+				</fieldset>
+				
+				<fieldset>
+		   	    	<legend>Account Details</legend>
+					<label>Login ID:*</label><br>
+					<input class="inputstyle" autocomplete="off" type="text" id="login" name="login" placeholder="Login-ID">
+					<br><br>
+
+					<label>Password:*</label><br>
+					<input class="inputstyle" autocomplete="off" type="password" id="password" name="pass" placeholder="Password">
+					<br><br>
+
+					<label>Retype Password:*</label><br>
+					<input class="inputstyle" autocomplete="off" type="password" id="repassword" name="pass" placeholder="Retype Password">
+					<br>
+					<input type="button" class="resetbtn" id="reset" onclick="var arg = ['login','password','repassword'];resetThis(arg);" name="reset" value="Reset Account Details">
+					<br><br>
+		  	  	</fieldset>
+		      <input type="submit" class="signupbtn" value="Sign Up">
+		      <input type="reset" class="resetbtnmain" value="Reset All">
+		    </form>
+		</div>
+	</center>
+<script type="text/javascript" src="validateSignup.js"></script>
+
+</body>
+</html>
