@@ -41,8 +41,6 @@ struct symbtb
 
 symbtb sytb[100];
 
-
-
 //LITERAL TABLE
 int it_lit = 0;
 
@@ -63,8 +61,6 @@ string litpt[100];
 int it_pool = 0;
 int pt[100];
 
-
-
 //ARRAY TO STORE LC PER LINE
 int arlc[100];
 
@@ -81,20 +77,19 @@ int curline = 0;
 bool commaFlag = false;
 
 //FUNCTION DECLARATIONS			        //returns
-int is_keyword(string word);			//-1 for fail else code
+int is_keyword(string word);		//-1 for fail else code
 int is_mne(string word);			//-1 for fail else code
 int is_ad(string word);				//-1 for fail else code
 int is_dl(string word);				//-1 for fail else code
 int is_reg(string word);			//-1 for fail else code
-int in_sytb(string word, int addr); 		//returns -1 for fail else 1
+int in_sytb(string word, int addr); //returns -1 for fail else 1
 int in_litpt(string word);			//returns -1 for fail else 1
-int is_constant(string word);			//-1 fro fail else integer value
-void print_sytb();				//print syboltb
-void print_litpl();				//print literal pool
-void print_poolt();				//print pool tabel
-void print_littb();				//print literal tabel	
+int is_constant(string word);		//-1 fro fail else integer value
+void print_sytb();					//print syboltb
+void print_litpl();					//print literal pool
+void print_poolt();					//print pool tabel
+void print_littb();					//print literal tabel
 int process_lit(int addr);			//process literals after end or ltorg returns next lc
-
 
 int main()
 {
@@ -190,16 +185,22 @@ int main()
 				else
 				{
 					//shoudnt be reg
-					if(is_reg(word) == -1){
+					if (is_reg(word) == -1)
+					{
 						//cout<<"\tinc lc for: "<<word<<endl;
 						//can be any keyword
 						//origin restart lc from here
-						if( strcmp(word.c_str(),"ORIGIN") == 0 ){}
+						if (strcmp(word.c_str(), "ORIGIN") == 0)
+						{
+							chkconst = true;
+						}
 						//ltorg	process literals
-						else if( strcmp(word.c_str(),"LTORG") == 0 )
+						else if (strcmp(word.c_str(), "LTORG") == 0)
 							lc = process_lit(lc);
 						//equ change lc for tht instruction only
-						else if( strcmp(word.c_str(),"EQU") == 0 ){}
+						else if (strcmp(word.c_str(), "EQU") == 0)
+						{
+						}
 						//for other inst inc lc by 1
 						else
 							lc++;
@@ -207,7 +208,7 @@ int main()
 				}
 				line = 0; //reset the line flag afer reading keyword
 			}
-			else if(is_keyword(word) == -1)
+			else if (is_keyword(word) == -1)
 			{ //if the word is not a keyword then...
 				//can be label or literal or constant
 				//if line has started and its the first word which is not a keyword then consider it as a label and keep the line flag 1;
@@ -223,10 +224,12 @@ int main()
 						it_sytb++;
 						word = " ";
 					}
-				}else{
-					
+				}
+				else
+				{
+
 					//after , next word will be a symb or literal so we set a flag anticipating the situation
-					
+
 					if (commaFlag)
 					{
 						//cout<<"after comma : "<<word;
@@ -234,12 +237,12 @@ int main()
 						if (word[0] == '=')
 						{
 							//store in literal pool
-							if(in_litpt(word)==-1)
+							if (in_litpt(word) == -1)
 								litpt[it_litpool++] = word;
 						}
 						else
 						{
-							
+
 							if (in_sytb(word, 0) == -1)
 							{
 								//and if it is not add it in table without address
@@ -248,7 +251,6 @@ int main()
 								//cout << "symb nad: " << word << endl;
 								it_sytb++;
 							}
-						
 						}
 						commaFlag = false;
 					}
@@ -260,7 +262,7 @@ int main()
 				curline++;
 			}
 			word = "";
-		}//end for
+		} //end for
 
 		//skip dividers
 		if (c == ' ' || c == '\n' || c == '\t' || c == ',')
@@ -280,16 +282,17 @@ int main()
 	return 0;
 }
 
-
-int process_lit(int addr){
-		print_litpl();
+int process_lit(int addr)
+{
+	print_litpl();
 	//add new index of lit tabel to pool tabel
 	pt[it_pool++] = it_lit;
 	//put contents of literal pool to literal tabel and give add
-	for(int it = 0;it < it_litpool;it++){
+	for (int it = 0; it < it_litpool; it++)
+	{
 		lit[it_lit].no = it_lit;
 		lit[it_lit].literal = litpt[it];
-		lit[it_lit++].addr = addr++;				 
+		lit[it_lit++].addr = addr++;
 	}
 	it_litpool = 0;
 	return addr;
@@ -315,7 +318,7 @@ int in_sytb(string word, int addr)
 	return -1;
 }
 
-//check if a literal is already in literal pool 
+//check if a literal is already in literal pool
 int in_litpt(string word)
 {
 	for (int it = 0; it < it_litpool; it++)
@@ -341,17 +344,18 @@ void print_litpl()
 		cout << " lit: " << litpt[it] << endl;
 }
 
-void print_poolt(){
-	cout<<"\n\tPool Tabel:\n";
+void print_poolt()
+{
+	cout << "\n\tPool Tabel:\n";
 	for (int it = 0; it < it_pool; it++)
 		cout << " index: " << pt[it] << endl;
 }
-void print_littb(){
-	cout<<"\n\tLiteral Tabel:\n";
-	cout<<"\nNo\tLITERAL\tADDRESS\n";
+void print_littb()
+{
+	cout << "\n\tLiteral Tabel:\n";
+	cout << "\nNo\tLITERAL\tADDRESS\n";
 	for (int it = 0; it < it_lit; it++)
-		cout << lit[it].no <<"\t"<< lit[it].literal <<"\t"<<lit[it].addr<< endl;
-
+		cout << lit[it].no << "\t" << lit[it].literal << "\t" << lit[it].addr << endl;
 }
 
 //returns -1 if word is not keyword else returns its code
