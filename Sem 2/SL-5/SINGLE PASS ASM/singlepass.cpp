@@ -67,6 +67,7 @@ int key_ind = 0;
 bool commaFlag = false;
 bool getValueFlag = false;
 bool afterds = false;
+bool printsyminop = false;
 
 //FUNCTION DECLARATIONS			        //returns
 int is_keyword(string word);		//-1 for fail else code
@@ -86,6 +87,7 @@ int getValue(string word);			//returns value of expression after origin/equ
 int symVal(string word);			//returns value of symbol	
 int getVal(string word);			//returns value after processing equation if any
 int generateIC(string word,ofstream& outFile);			//writes intermidate code of string to file
+int loc_littb(string word);			//returns position of literal in littb
 
 int main(){
 	fstream fp;
@@ -115,8 +117,8 @@ int main(){
 					cout<<"DS should always have a constant value after it";
 					return -1;
 				}
-				//8888888888888888888888888888888888888
-				generateIC(word,outFile);
+				
+				//generateIC(word,outFile);
 				afterds = false;
 			}
 			
@@ -137,8 +139,9 @@ int main(){
 				}else
 					lc = cnst;
 				chkconst = false;
-				cout<<"printing to file: "<<word<<endl;
+				//cout<<"printing to file: "<<word<<endl;
 				generateIC(word,outFile);
+				outFile<<endl;
 				word = "";
 				continue;
 			}
@@ -163,8 +166,7 @@ int main(){
 						cout << "Code must start with start!\n Aborting...";
 						return -1;
 					}
-				}
-				//end check
+				}//end start check
 				//check for end there should be nothing after end and literals are to be processed and lc to be manipulated
 				else if (strcmp(word.c_str(), ad[1].c_str()) == 0){
 					//nothing else should be read other than newline or eof or space or tab
@@ -177,6 +179,7 @@ int main(){
 					//if we complete this loop then everything is fine
 					//process literals and terminate
 					lc = process_lit(lc);
+					generateIC(word,outFile);
 					break;
 				}else{
 					//shoudnt be reg
@@ -241,10 +244,14 @@ int main(){
 			if (c == '\n'){
 				line = 1;
 				curline++;
-				outFile<<"\n";
 			}
 			if(word != "")
 				generateIC(word,outFile);
+				
+				printsyminop = false;
+			if(c == '\n'){
+				outFile<<endl;
+			}
 			whatis = -1;
 			word = "";
 		} //end for
@@ -282,17 +289,38 @@ int generateIC(string word,ofstream& outFile){
 	//reg
 	else if(whatis == 3)
 		outFile<<"("<<key_ind<<")\t";
-	//symb
-	else if(in_sytb(word,0) != -1)
-		outFile<<"(S,"<<in_sytb(word,0)<<")\t";
 	//constant
 	else if(is_constant(word) != -1)
 		outFile<<"(C,"<<word<<")\t";
 	//literal
-	else if (word[0] == '=' && word[1] == '\'' )
-		outFile<<"(L,"<<word<<")\t";
+	else if (word[0] == '=' && word[1] == '\'' ){
+		if(loc_littb(word) != -1)
+			outFile<<"(L,"<<loc_littb(word)<<")\t";
+	}
+	//symb
+	else if( (in_sytb(word,0) != -1) && printsyminop)
+		outFile<<"(S,"<<in_sytb(word,0)<<")\t";
+	printsyminop = true;
 }
 
+int loc_littb(string word){
+	//if its in littab
+	if (it_lit != 0){
+		for (int it = 0; it < it_lit; it++){
+			if(strcmp(word.c_str(),lit[it].literal.c_str()) == 0)
+				return it;
+		}
+	}
+	//if its in lit pool
+	int loc = 0;
+	if(it_lit!=0)
+		loc += it_lit;
+	for (int it = 0; it < it_litpool; it++){
+		if(strcmp(word.c_str(),litpt[it].c_str()) == 0)
+			return loc += it;
+	}
+	return -1;
+}
 //get value of expression after equ or origin
 int getVal(string word){
 	int lc2 = 0;
@@ -321,6 +349,7 @@ int getVal(string word){
 		return symVal(symb);
 }
 
+//returns address of symbol
 int symVal(string word){
 	for (int it = 0; it < it_sytb; it++)
 		if (strcmp(sytb[it].sym.c_str(), word.c_str()) == 0)
@@ -332,7 +361,7 @@ int process_lit(int addr){
 	//print_litpl();
 	//add new index of lit tabel to pool tabel
 	if(it_litpool == 0){
-		cout<<"NO LITERA IN LITERAL POOL!";
+		cout<<"NOTHING TO PROCESS IN LITERAL POOL!";
 		return -1;
 	}
 	pt[it_pool++] = it_lit;
@@ -458,6 +487,8 @@ int is_reg(string word){
 //if the passed string is a constant retrurns its integer value else returns -1
 int is_constant(string word){
 	char it = word[0];
+	if(!isdigit(it))
+		return -1;
 	int i = 1;
 	while (i != strlen(word.c_str())){
 		if (!isdigit(it))
