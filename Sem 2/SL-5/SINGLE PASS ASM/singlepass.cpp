@@ -16,8 +16,9 @@ END
 */
 #include <iostream>
 #include <fstream>
-#include <string>
+#include <string.h>
 #include <bits/stdc++.h>
+//#include<ctype.h>
 using namespace std;
 
 //ARRAY TO STORE MNEMONICS, ASSEMBLER DIRECTIVES AND DECLERATIVES
@@ -56,14 +57,17 @@ int pt[100];
 //ARRAY TO STORE LC PER LINE
 int arlc[100];
 //A FLAG THAT WILL BE 0 FOR MNEMONIC, 1 FOR AD, 2 FOR DL AND 3 FOR REG
-int whatis = 0;
+int whatis = -1;
 //INTEGER VARIABLE TO TEMPORARLY STORE ANY CONSTANT
 int cnst = 0;
 //INT VARIABLE TO STORE CURRENT LINE NO
 int curline = 1;
-//FLAG TO ENCOUNTER ,
+int key_ind = 0;
+//FLAGS
 bool commaFlag = false;
 bool getValueFlag = false;
+bool afterds = false;
+
 //FUNCTION DECLARATIONS			        //returns
 int is_keyword(string word);		//-1 for fail else code
 int is_mne(string word);			//-1 for fail else code
@@ -79,12 +83,16 @@ void print_poolt();					//print pool tabel
 void print_littb();					//print literal tabel
 int process_lit(int addr);			//process literals after end or ltorg returns next lc
 int getValue(string word);			//returns value of expression after origin/equ
-int symVal(string word);			//returns value of ymbol	
+int symVal(string word);			//returns value of symbol	
+int getVal(string word);			//returns value after processing equation if any
+int generateIC(string word,ofstream& outFile);			//writes intermidate code of string to file
 
 int main(){
-	fstream fp, fp2;
+	fstream fp;
 	fp.open("ASM.txt");
-	fp2.open("output.txt");
+	
+	ofstream outFile;
+	outFile.open("output.txt");
 	
 	char c;
 	string word = "";
@@ -98,10 +106,25 @@ int main(){
 			//need for , seperator processing
 			if (c == ',')
 				commaFlag = true;
-
-			if(getValueFlage){
-				lc = getVal(word);
+			
+			//if const is after ds then
+			if(afterds){
+				if(is_constant(word))
+					lc += is_constant(word);
+				else{
+					cout<<"DS should always have a constant value after it";
+					return -1;
+				}
+				//8888888888888888888888888888888888888
+				generateIC(word,outFile);
+				afterds = false;
 			}
+			
+			if(getValueFlag){
+				lc = getVal(word);
+				getValueFlag = false;
+			}
+			
 			//if we read start we will check the next word for being constant
 			//this block will execute only at start of code
 			if (chkconst == true){
@@ -114,12 +137,16 @@ int main(){
 				}else
 					lc = cnst;
 				chkconst = false;
+				cout<<"printing to file: "<<word<<endl;
+				generateIC(word,outFile);
 				word = "";
 				continue;
 			}
 
 			//check for word being keyword
 			if (is_keyword(word) != -1){
+				//store the index returned by function
+				key_ind = is_keyword(word);
 				//if its the start of code then lc=0 & 1st word should be AD and it should be start
 				//cout<<endl<<word<<c;
 				if (lc == 0 && whatis == 1){
@@ -127,8 +154,9 @@ int main(){
 					if (strcmp(word.c_str(), ad[0].c_str()) == 0){
 						//set flag indicating that we will have to get a constant now
 						chkconst = true;
-
-						//reset the word
+						
+						generateIC(word,outFile);
+						whatis = -1;
 						word = "";
 						continue;
 					}else{
@@ -164,6 +192,10 @@ int main(){
 						//else if (strcmp(word.c_str(), "EQU") == 0){
 							//we change addr of last symbol here
 						//}
+						//for ds add const to lc
+						else if(strcmp(word.c_str(), "DS") == 0)
+							afterds = true;
+
 						//for other inst inc lc by 1
 						else
 							lc++;
@@ -179,10 +211,9 @@ int main(){
 					if (in_sytb(word, lc) == -1){
 						sytb[it_sytb].sym = word;
 						sytb[it_sytb].addr = lc;
-						//cout << "symb: " << word << endl;
 						it_sytb++;
+						generateIC(word,outFile);
 						word = " ";
-						lastSymbol = curline;
 					}
 				}else{
 					//after , next word will be a symb or literal so we set a flag anticipating the situation
@@ -190,8 +221,10 @@ int main(){
 						//literal starts with ='
 						if (word[0] == '=' && word[1] == '\'' ){
 							//store in literal pool
-							if (in_litpt(word) == -1)
+							if (in_litpt(word) == -1){
 								litpt[it_litpool++] = word;
+								///generateIC(word,outFile);
+							}
 						}else{
 							if (in_sytb(word, 0) == -1){
 								//and if it is not add it in table without address
@@ -208,7 +241,11 @@ int main(){
 			if (c == '\n'){
 				line = 1;
 				curline++;
+				outFile<<"\n";
 			}
+			if(word != "")
+				generateIC(word,outFile);
+			whatis = -1;
 			word = "";
 		} //end for
 
@@ -220,7 +257,6 @@ int main(){
 	}
 
 	fp.close();
-	fp2.close();
 	print_sytb();
 	print_litpl();
 	print_poolt();
@@ -228,10 +264,40 @@ int main(){
 	return 0;
 }
 
+//generates and writes ic to file per keyword
+int generateIC(string word,ofstream& outFile){
+	//mne
+	//
+	if(word == " ")
+		return 0;
+	//outFile<<"word:"<<word;
+	if(whatis == 0)
+		outFile<<"(IS,"<<key_ind<<")\t";
+	//ad
+	else if(whatis == 1)
+		outFile<<"(AD,"<<key_ind<<")\t";	
+	//dl
+	else if(whatis == 2)
+		outFile<<"(DL,"<<key_ind<<")\t";
+	//reg
+	else if(whatis == 3)
+		outFile<<"("<<key_ind<<")\t";
+	//symb
+	else if(in_sytb(word,0) != -1)
+		outFile<<"(S,"<<in_sytb(word,0)<<")\t";
+	//constant
+	else if(is_constant(word) != -1)
+		outFile<<"(C,"<<word<<")\t";
+	//literal
+	else if (word[0] == '=' && word[1] == '\'' )
+		outFile<<"(L,"<<word<<")\t";
+}
+
 //get value of expression after equ or origin
-int getValue(string word){
+int getVal(string word){
 	int lc2 = 0;
-	if(lc2 = is_constant(word) != -1)
+	lc2 = is_constant(word);
+	if(lc2 != -1)
 		return lc2;
 	size_t loc;
 	string symb = "";
@@ -239,15 +305,15 @@ int getValue(string word){
 	loc = word.find('+');
 	if(loc != string::npos){
 		//seperate constant and symbol
-		for(int i=0;i<strlen(word);i++){
+		for(int i=0;i<strlen(word.c_str());i++){
 			if(i<loc)
 				symb += word[i];
 			else if(i>loc)
-				con += word[i]
+				con += word[i];
 		}
 		//get and add the values
-		if(lc2 = symVal(symb) != -1 && is_const(con) != -1)
-			return lc2+is_const(con);
+		if(lc2 = symVal(symb) != -1 && is_constant(con) != -1)
+			return lc2+is_constant(con);
 		else
 			cout<<"Illegle Operation";
 	}
@@ -263,8 +329,12 @@ int symVal(string word){
 }
 //handle literal
 int process_lit(int addr){
-	print_litpl();
+	//print_litpl();
 	//add new index of lit tabel to pool tabel
+	if(it_litpool == 0){
+		cout<<"NO LITERA IN LITERAL POOL!";
+		return -1;
+	}
 	pt[it_pool++] = it_lit;
 	//put contents of literal pool to literal tabel and give add
 	for (int it = 0; it < it_litpool; it++){
