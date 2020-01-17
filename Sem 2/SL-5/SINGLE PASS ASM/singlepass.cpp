@@ -1,18 +1,5 @@
 /*
 	SINGLE PASS ASSEMBLER
-START 100	
-MOVER AREG,A		100
-L MOVEM	BREG,='2'	101	104
-ADD BREG,='2'		102
-ADD CREG,='3'		103	105
-ORIGIN L+20		
-LTORG			
-MOVER AREG,C		106
-C EQU L+15		
-ADD AREG,='2'		107	110
-ADD BREG,='5'		108	111
-A DS 5			109
-END
 */
 #include <iostream>
 #include <fstream>
@@ -56,18 +43,22 @@ int pt[100];
 
 //ARRAY TO STORE LC PER LINE
 int arlc[100];
+int itlc = 0;
 //A FLAG THAT WILL BE 0 FOR MNEMONIC, 1 FOR AD, 2 FOR DL AND 3 FOR REG
 int whatis = -1;
 //INTEGER VARIABLE TO TEMPORARLY STORE ANY CONSTANT
 int cnst = 0;
 //INT VARIABLE TO STORE CURRENT LINE NO
-int curline = 1;
+int curline = 0;
 int key_ind = 0;
 //FLAGS
 bool commaFlag = false;
 bool getValueFlag = false;
 bool afterds = false;
 bool printsyminop = false;
+bool lcprinted = false;
+bool prevsymb = false;
+bool changelc = false;
 
 //FUNCTION DECLARATIONS			        //returns
 int is_keyword(string word);		//-1 for fail else code
@@ -88,6 +79,7 @@ int symVal(string word);			//returns value of symbol
 int getVal(string word);			//returns value after processing equation if any
 int generateIC(string word,ofstream& outFile);			//writes intermidate code of string to file
 int loc_littb(string word);			//returns position of literal in littb
+int chksytb();
 
 int main(){
 	fstream fp;
@@ -96,23 +88,47 @@ int main(){
 	ofstream outFile;
 	outFile.open("output.txt");
 	
+	ofstream lcFile;
+	lcFile.open("lc.txt");
+	
+	//to track file
+	streampos oldpos;
+	
 	char c;
 	string word = "";
 	int line = 1;			//0 for line end; 1 for line start
-	int lc = 0, prevlc = 0; //for location counter
+	int lc = 0, newlc = 0; //for location counter
 	bool chkconst = false;  //will be set true if we want to check the next word for constant
 
 	while (fp.get(c)){
 		//possible breakpoints between words
+		
 		if (c == ' ' || c == '\n' || c == '\t' || c == ','){
+		
+			if(changelc){
+				lc = newlc;
+				changelc = false;
+			}
 			//need for , seperator processing
 			if (c == ',')
 				commaFlag = true;
 			
+			if(prevsymb){
+				if(is_keyword(word) == -1){
+					cout<<"There must be a mnemonic after symbol!\n"<<word<<" Found";
+					return -1;
+				}
+				prevsymb = false;
+			}
+			
+			
 			//if const is after ds then
 			if(afterds){
-				if(is_constant(word))
-					lc += is_constant(word);
+				if(is_constant(word)){
+					newlc = lc + is_constant(word);
+					lc++;
+					changelc = true;
+				}
 				else{
 					cout<<"DS should always have a constant value after it";
 					return -1;
@@ -142,6 +158,7 @@ int main(){
 				//cout<<"printing to file: "<<word<<endl;
 				generateIC(word,outFile);
 				outFile<<endl;
+				lcFile<<lc<<endl;
 				word = "";
 				continue;
 			}
@@ -155,7 +172,10 @@ int main(){
 				if (lc == 0 && whatis == 1){
 					//if the word is start then we have to get lc
 					if (strcmp(word.c_str(), ad[0].c_str()) == 0){
+						lcFile<<0<<endl;
 						//set flag indicating that we will have to get a constant now
+						//arlc[curline] = 0;
+						//curline++;
 						chkconst = true;
 						
 						generateIC(word,outFile);
@@ -169,6 +189,8 @@ int main(){
 				}//end start check
 				//check for end there should be nothing after end and literals are to be processed and lc to be manipulated
 				else if (strcmp(word.c_str(), ad[1].c_str()) == 0){
+					lcFile<<0<<endl;
+					lcprinted = true;
 					//nothing else should be read other than newline or eof or space or tab
 					while (fp.get(c)){
 						if (c != ' ' || c != '\n' || c != '\t'){
@@ -178,6 +200,10 @@ int main(){
 					}
 					//if we complete this loop then everything is fine
 					//process literals and terminate
+					if(chksytb()!=0){
+						cout<<"\nAborting!";
+						return -1;
+					}
 					lc = process_lit(lc);
 					generateIC(word,outFile);
 					break;
@@ -186,15 +212,26 @@ int main(){
 					if (is_reg(word) == -1){
 						//can be any keyword
 						//origin restart lc from here
-						if (strcmp(word.c_str(), "ORIGIN") == 0)
+						if (strcmp(word.c_str(), "ORIGIN") == 0){
 							getValueFlag = true;
+							lcFile.seekp(oldpos); 
+							//arlc[curline] = 0;
+							lcFile<<0<<endl;
+							lcprinted = true;
+						}
 						//ltorg	process literals
-						else if (strcmp(word.c_str(), "LTORG") == 0)
+						else if (strcmp(word.c_str(), "LTORG") == 0){
 							lc = process_lit(lc);
+							//arlc[curline] = 0;
+							lcFile<<0<<endl;
+							lcprinted = true;
+						}
 						//equ change lc for tht instruction only
-						//else if (strcmp(word.c_str(), "EQU") == 0){
-							//we change addr of last symbol here
-						//}
+						else if (strcmp(word.c_str(), "EQU") == 0){
+							//arlc[curline] = 0;
+							lcFile<<0<<endl;
+							lcprinted = true;
+						}
 						//for ds add const to lc
 						else if(strcmp(word.c_str(), "DS") == 0)
 							afterds = true;
@@ -205,7 +242,13 @@ int main(){
 					}
 				}
 				line = 0; //reset the line flag afer reading keyword
-			}else if (is_keyword(word) == -1){ 
+			}
+
+
+//**************************non keywords*******************************************//
+
+
+			else if (is_keyword(word) == -1){ 
 				//can be label or literal or constant
 				//if line has started and its the first word which is not a keyword then consider it as a label and keep the line flag 1;
 				if (line == 1){
@@ -215,6 +258,7 @@ int main(){
 						sytb[it_sytb].sym = word;
 						sytb[it_sytb].addr = lc;
 						it_sytb++;
+						prevsymb = true;
 						generateIC(word,outFile);
 						word = " ";
 					}
@@ -243,6 +287,9 @@ int main(){
 			}
 			if (c == '\n'){
 				line = 1;
+				//cout<<"curline: "<<curline<<"lc: "<<lc<<endl;
+				//if(!lcprinted && (strcmp(word.c_str(), "ORIGIN") != 0) )
+				//	arlc[curline] = lc;
 				curline++;
 			}
 			if(word != "")
@@ -251,6 +298,12 @@ int main(){
 				printsyminop = false;
 			if(c == '\n'){
 				outFile<<endl;
+				if(!lcprinted){
+					oldpos = lcFile.tellp();
+					lcFile<<lc<<endl;
+				}
+				else
+					lcprinted = false;
 			}
 			whatis = -1;
 			word = "";
@@ -268,8 +321,21 @@ int main(){
 	print_litpl();
 	print_poolt();
 	print_littb();
+	//cout<<"\t\tline:"<<curline;
+	
+	
 	return 0;
 }
+
+//returns 0 if all symjbols have been declared else returns -1;
+int chksytb(){
+	for(int i=0;i<it_sytb;i++){
+		if(sytb[i].addr == 0)
+			cout<<"No delcleration of symbol "<<sytb[i].sym<<" found!";
+	}
+	return 0;
+}
+
 
 //generates and writes ic to file per keyword
 int generateIC(string word,ofstream& outFile){
@@ -340,8 +406,10 @@ int getVal(string word){
 				con += word[i];
 		}
 		//get and add the values
-		if(lc2 = symVal(symb) != -1 && is_constant(con) != -1)
-			return lc2+is_constant(con);
+		if(symVal(symb) != -1 && is_constant(con) != -1){
+			//cout<<"return "<<symVal(symb)+is_constant(con);
+			return symVal(symb)+is_constant(con);
+		}
 		else
 			cout<<"Illegle Operation";
 	}
