@@ -285,17 +285,18 @@ int main(){
 					}
 				}
 			}
+			
+			if(word != ""){
+				generateIC(word,outFile);
+			}
 			if (c == '\n'){
 				line = 1;
+				printsyminop = false;
 				//cout<<"curline: "<<curline<<"lc: "<<lc<<endl;
 				//if(!lcprinted && (strcmp(word.c_str(), "ORIGIN") != 0) )
 				//	arlc[curline] = lc;
 				curline++;
 			}
-			if(word != "")
-				generateIC(word,outFile);
-				
-				printsyminop = false;
 			if(c == '\n'){
 				outFile<<endl;
 				if(!lcprinted){
@@ -449,9 +450,11 @@ int in_sytb(string word, int addr){
 		//cout << "check " << word<<endl;
 		if (strcmp(sytb[it].sym.c_str(), word.c_str()) == 0){
 			//set address if not already set
-			if (sytb[it].addr == 0 && addr != 0)
+			if (sytb[it].addr == 0 && addr != 0){
+				//cout << "word " << word<<" loc: "<<<<endl;
 				sytb[it].addr = addr;
-			return 1;
+			}
+			return it;
 		}
 	}
 	return -1;
@@ -468,12 +471,18 @@ int in_litpt(string word){
 
 //prints symbol table
 void print_sytb(){
+	ofstream stFile;
+	stFile.open("st.txt");
+	
 	cout << "\n\tSymbol Table:\n";
-	for (int it = 0; it < it_sytb; it++)
+	for (int it = 0; it < it_sytb; it++){
 		cout << " sym: " << sytb[it].sym << " addr: " << sytb[it].addr << endl;
+		stFile<< sytb[it].sym<< "\t" << sytb[it].addr << endl;
+	}
 }
 
 void print_litpl(){
+
 	cout << "\n\tLiteral pool:\n";
 	for (int it = 0; it < it_litpool; it++)
 		cout << " lit: " << litpt[it] << endl;
@@ -485,10 +494,15 @@ void print_poolt(){
 		cout << " index: " << pt[it] << endl;
 }
 void print_littb(){
+	ofstream ltFile;
+	ltFile.open("lt.txt");
+	
 	cout << "\n\tLiteral Tabel:\n";
 	cout << "\nNo\tLITERAL\tADDRESS\n";
-	for (int it = 0; it < it_lit; it++)
+	for (int it = 0; it < it_lit; it++){
 		cout << lit[it].no << "\t" << lit[it].literal << "\t" << lit[it].addr << endl;
+		ltFile<< lit[it].no << "\t" << lit[it].literal << "\t" << lit[it].addr << endl;
+	}
 }
 
 //returns -1 if word is not keyword else returns its code
