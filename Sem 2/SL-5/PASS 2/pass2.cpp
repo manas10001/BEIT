@@ -1,6 +1,7 @@
 /*
 	PASS 2 
 	READ INTERMEDIATE CODE AND GENERATE MACHINE CODE
+	THE OUTPUT GENERATED IN FILE IS THE FINAL OUTPUT
 */
 
 #include <iostream>
@@ -133,6 +134,9 @@ void generate_code(){
 	fstream input;
 	input.open("input.txt");
 	
+	fstream output;
+	output.open("output.txt");
+	
 	int lc_cnt = 0;		//loc counter
 	string str;
 	
@@ -141,9 +145,11 @@ void generate_code(){
 	
 	//to track file
 	streampos oldpos;
+	oldpos = output.tellp();
 	
 	cout<<"\n\n\tMachine code:\n\n";
 	cout<<"LC\tMN\tREG\tMEM\n";
+	
 	//loop through line
 	while(getline(input,str)){
 		int len = str.length();
@@ -156,24 +162,30 @@ void generate_code(){
 			//cout<<token<<":";
 			//for ad print nothing
 			if(isAD(token)){
+				output.seekp(oldpos);
 				cout<<"-\t-\t-\t";
+				output<<"-\t-\t-\t-";
 				lc_cnt++;
 				printnothing = true;
 			}
 			//for ad print nothing
 			else if(isDL(token)){
+				output.seekp(oldpos);			
 				cout<<"-\t-\t-\t";
+				output<<"-\t-\t-\t-";
 				lc_cnt++;
 				printnothing = true;
 			}
 			//for is print opcode
 			else if(isIS(token) && !printnothing ){
+				output<<token[3]<<"\t";
 				cout<<token[3]<<"\t";
 				lc_cnt++;
 			}
 			//for reg print opcode
 			else if(isReg(token) && lc_cnt != 0 && !printnothing ){
 				cout<<token[0]<<"\t";
+				output<<token[0]<<"\t";
 				lc_cnt++;
 			}
 			//for Literal print its address
@@ -181,24 +193,29 @@ void generate_code(){
 				const char *s = (token + 2);
 				int i = atoi(s);
 				cout<<lit[i].addr<<"\t";
-				
+				output<<lit[i].addr<<"\t";
 			}
 			//for symbo print its address
 			else if(isSym(token) && !printnothing ){
 				const char *s = (token + 2);
 				int i = atoi(s);
 				cout<<sytb[i].addr<<"\t";
+				output<<sytb[i].addr<<"\t";
 			}
 			//lc will come at start of line only so lc_cnt must be zero
 			else if(lc_cnt == 0 && token[0] != 0 && !printnothing ){
 				//const char *s = (token + 2);
 				int i = atoi(token);
 				cout<<i<<"\t";
+				output<<i<<"\t";
 				lc_cnt = 1;
 			}
 			token = strtok(0," ( )");
 		}
+		
 		cout<<endl;
+		output<<endl;
+		oldpos = output.tellp();
 		lc_cnt = 0;
 		printnothing = false;
 	}
