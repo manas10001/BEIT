@@ -78,6 +78,10 @@ public class LogProcessor {
 			
 		}
 		//a func to write final result
-		
+		protected void cleanup(Context context) throws IOException, InterruptedException {
+			//for (Text t : Top5DataEngineer.descendingMap().values())
+			context.write(Tmax, new IntWritable(0));
+			context.write(Tmin, new IntWritable(0));
+	    	}
 	}
 }
