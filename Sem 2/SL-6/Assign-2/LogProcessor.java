@@ -43,13 +43,28 @@ public class LogProcessor {
 	public static class MapLog extends Mapper<LongWritable, Text, Text, IntWritable>{
 		public void map(LongWritable key, Text value, Context con) throws IOException, InterruptedException
 		{
-			String line = value.toString();
-			String[] words=line.split(",");
-			for(String word: words )
-			{
-				Text outputKey = new Text(word.toUpperCase().trim());
-				IntWritable outputValue = new IntWritable(1);
-				con.write(outputKey, outputValue);
+			int cnt = 0;
+			Text  outputkey = null;
+			IntWritable outputValue = null;
+			String content = value.toString();
+			
+			String lines[]  = content.split("\n"); 
+			
+			for(String w : lines) {
+			
+				String[] words=w.split(",");
+				cnt = 0;
+				for(String word: words )
+				{
+					cnt++;
+					if(cnt == 1) {
+						outputkey = new Text(word.toUpperCase().trim());
+					}else {
+						outputValue = new IntWritable( Integer.parseInt(word.trim()));
+					}
+				}
+				con.write(outputkey, outputValue);
+				
 			}
 		}
 	}
@@ -61,27 +76,18 @@ public class LogProcessor {
 		Text Tmin = new Text();
 		public void reduce(Text word, Iterable<IntWritable> values, Context con) throws IOException, InterruptedException
 		{
-			int sum = 0; 
-			for(IntWritable it : values) {
-				sum += it.get();
+			int sum=0;
+			for (IntWritable value : values) {
+				sum += value.get();
 			}
 			con.write(word, new IntWritable(sum));
-			
-			if(sum<min) {
-				min = sum;
-				Tmin.set(word);
-			}
-			if(sum>max) {
-				max = sum;
-				Tmax.set(word);
-			}
-			
+						
 		}
 		//a func to write final result
-		protected void cleanup(Context context) throws IOException, InterruptedException {
-			//for (Text t : Top5DataEngineer.descendingMap().values())
-			context.write(Tmax, new IntWritable(0));
-			context.write(Tmin, new IntWritable(0));
-	    	}
+		/*protected void cleanup(Context context) throws IOException, InterruptedException {
+			
+			context.write(Tmax, new IntWritable(max));
+			context.write(Tmin, new IntWritable(min));
+	    }*/
 	}
 }
