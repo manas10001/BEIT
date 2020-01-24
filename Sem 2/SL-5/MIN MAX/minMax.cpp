@@ -20,9 +20,10 @@ void accept(int ar[],int sz){
 
 //display the array
 void display(int ar[], int sz){
-	cout<<"Array elements: ";
+	cout<<"\n\tArray elements: \n";
 	for(int i = 0;i < sz; i++)
 		cout<<ar[i]<<"\t";
+	cout<<endl;
 }
 
 //finds MIN and MAX of an array
@@ -54,9 +55,9 @@ int minmax(int ar[],int start,int end){
 		return 0;
 	}else{
 		int mid = (start + end) / 2;
-		cout<<"\tstart "<<start<<" mid "<<mid;
+		//cout<<"\tstart "<<start<<" mid "<<mid;
 		minmax(ar,start,mid);
-		cout<<"\tmid "<<mid+1<<" end "<<end;
+		//cout<<"\tmid "<<mid+1<<" end "<<end;
 		minmax(ar,mid+1,end);
 		
 	}
