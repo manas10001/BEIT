@@ -131,11 +131,13 @@ void store(prog pr[],int sz){
 	
 	int mrt = 0;
 	//calculate mrt
-	for(int i = 0;i < count-1; i++){
-		cout<<mrt <<"+="<< mrt <<"+"<< tape[i].len<<endl;;
-		mrt += mrt + tape[i].len;
+	for(int i = 0;i < count; i++){
+		for(int j = 0;j <= i;j++){
+			mrt += tape[j].len;
+		}
 	}
-	cout<<"\n\nMRT: "<<mrt;
+	mrt = mrt/count;
+	cout<<"\n\nMRT: "<<mrt<<endl;
 	//sum+=i+sum
 }
 
