@@ -67,7 +67,7 @@ void nqueen(int no,int n){
 			//if the last queen has not yet been placed then give recursive call else print mai
 			if(no == n){
 				print(n);	
-				c++;			
+				c++;		//counts no of solutions	
 			}else
 				nqueen(no+1,n);
 				
