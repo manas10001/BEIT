@@ -19,9 +19,9 @@ vector<string> sytb;
 vector<string> littb;
 
 //terminal table 	contains all terminals except keywords
-string arterm[] = {"#","include","<","stdio.h",">","conio.h","(",")","printf","scanf","[","]","\"","\'",",",";","\\","","","",};
+string arterm[] = {"auto", "break", "case", "char", "continue", "do", "default", "const", "double", "else", "enum", "extern","for","if","goto","float","int","long", "register", "return", "signed","static","sizeof","short", "struct", "switch", "typedef","union","void", "while", "volatile", "unsigned", "include", "stdio.h", "void", "main" , "printf", "scanf", "#", "\\", "+", "-", "*", "/", "++", "--", "<", ">", "<=", ">=", ",", ";", "\"", "\'", "&", "<", ">"};
 
-vector<string> trmtb(arterm,arterm+5);
+vector<string> trmtb(arterm,arterm+57);
 
 //ust
 struct ust{
@@ -51,16 +51,19 @@ int chkchar(char c){
 	
 
 	if(c=='+' || c=='-' || c=='*' || c=='/' || c=='='|| c=='&'|| c=='%' ){
-		cout<<"\t\tOPERATOR"<<endl;
+		cout<<"\t\tTRM"<<endl;
 		return 1;
 	}else if(isdigit(c)){
-		cout<<"\t\tLITERAL"<<endl;
+		cout<<"\t\tLIT"<<endl;
 		return 1;
 	}else if(find(sym.begin(),sym.end(),c) != sym.end()){
-		cout<<"\t\tSPECIAL CHARACTER"<<endl;
+		cout<<"\t\tTRM"<<endl;
 		return 1;
 	}else{
-		cout<<"\t\tSYMBOL"<<endl;
+		if(quoteflag)
+			cout<<"\t\tLIT \n";
+		else
+			cout<<"\t\tIDN\n";
 		return 1;
 	}
 	return 0;
@@ -77,20 +80,23 @@ int chkstr(string str){
 		chkchar(str[0]);
 		return 1;
 	}*/
-	if(find(tkn.begin(),tkn.end(),str) != tkn.end()){
-		cout<<"\t\tTKN\n";
+	if(find(trmtb.begin(),trmtb.end(),str) != trmtb.end()){
+		cout<<"\t\tTRM\n";
 		return 1;
 	}
-	else if(find(ky.begin(),ky.end(),str) != ky.end()){
-		cout<<"\t\tKEYWORD\n";
-		return 1;
-	}
-	else if(is_constant(str)!=-1 || quoteflag){
-		cout<<"\t\tLITERAL \n";
+//	else if(find(ky.begin(),ky.end(),str) != ky.end()){
+//		cout<<"\t\tKEYWORD\n";
+//		return 1;
+//	}
+	else if(is_constant(str)!=-1){
+		cout<<"\t\tLIT \n";
 		return 1;
 	}
 	else{
-		cout<<"\t\tVARIABLE\n";
+		if(quoteflag)
+			cout<<"\t\tLIT \n";
+		else
+			cout<<"\t\tIDN\n";
 		return 1;
 	}
 	return 0;
@@ -115,7 +121,7 @@ int main(){
 			if(find(sep.begin(),sep.end(),c) != sep.end()){
 				if(c=='"' && !quoteflag){
 					quoteflag = true;
-					cout<<c<<"\t\tSPECIAL CHARACTER"<<endl;				
+					cout<<c<<"\t\tTRM"<<endl;				
 				}else if (c=='"' && quoteflag)
 					quoteflag = false;
 				if(quoteflag){
@@ -137,33 +143,10 @@ int main(){
 					str.clear();
 				}
 			}
-				//cout<<"char: "<<c<<endl;
-			/*}else{
-				cout<<str<<endl;
-				str.clear();	
-				//cout<<"\t\t\t s: "<<str<<endl;
-			}*/
-			
-			//continue;
 		}
 		if(find(sep.begin(),sep.end(),c) == sep.end() && c != '\n' && c != '\t' )
 			str+=c;
 		//cout<<c<<endl;
 	}
-	
-	/*while(getline(inpt,str))
-	{
-		int len = str.length();
-		char c[len+1];
-		strcpy(c,str.c_str());
-		char *token = strtok(c," ");
-		while(token){
-			if
-			cout<<token<<"\t\t";
-			token = strtok(0," ");
-		}
-		cout<<endl;
-		
-	}*/
 	return 0;
 }
