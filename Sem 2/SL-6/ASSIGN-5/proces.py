@@ -1,4 +1,3 @@
-#basic processing on facebook metric data set
 #import pandas
 import pandas as pd
 
@@ -14,6 +13,11 @@ print(data.head())
 print("-----------------------------DESC----------------------------")
 print(data.describe())
 
+
+
+sorted_data = data.sort_values(by=['share'])
+print("-----------------------------SORTED DATA----------------------------")
+print(sorted_data.head())
 
 print("-----------------------------SUBSET (TYPE, COMMENT, LIKE, SHARE)----------------------------")
 sub1 = data[['Type','comment','like','share']]
