@@ -11,7 +11,7 @@ using namespace std;
 
 //flag
 bool quoteflag = false;
-
+bool dbcharflag = false;
 //sytb / idtb
 vector<string> sytb;
 
@@ -19,7 +19,7 @@ vector<string> sytb;
 vector<string> littb;
 
 //terminal table 	contains all terminals except keywords
-string arterm[] = {"auto", "break", "case", "char", "continue", "do", "default", "const", "double", "else", "enum", "extern","for","if","goto","float","int","long", "register", "return", "signed","static","sizeof","short", "struct", "switch", "typedef","union","void", "while", "volatile", "unsigned", "include", "stdio.h", "void", "main" , "printf", "scanf", "#", "\\", "+", "-", "*", "/", "++", "--", "<", ">", "<=", ">=", ",", ";", "\"", "\'", "&", "<", ">"};
+string arterm[] = {"auto", "break", "case", "char", "continue", "do", "default", "const", "double", "else", "enum", "extern","for","if","goto","float","int","long", "register", "return", "signed","static","sizeof","short", "struct", "switch", "typedef","union","void", "while", "volatile", "unsigned", "include", "stdio.h", "void", "main" , "printf", "scanf", "#", "\\", "+", "-", "*", "/", "++", "--", "==", "<", ">", "<=", ">=", ",", ";", "\"", "\'", "&", "<", ">"};
 
 vector<string> trmtb(arterm,arterm+57);
 
@@ -70,11 +70,11 @@ int chkchar(char c){
 }
 
 int chkstr(string str){
-	string key[] = {"auto", "break","case","char", "continue", "do","default","const", "double","else","enum","extern","for","if","goto","float","int","long", "register", "return", "signed","static","sizeof","short", "struct", "switch", "typedef","union","void", "while", "volatile", "unsigned"};
-	vector<string> ky(key,key+(32));
+//	string key[] = {"auto", "break","case","char", "continue", "do","default","const", "double","else","enum","extern","for","if","goto","float","int","long", "register", "return", "signed","static","sizeof","short", "struct", "switch", "typedef","union","void", "while", "volatile", "unsigned"};
+//	vector<string> ky(key,key+(32));
 	
-	string trm[] = {"include","stdio.h","void","main"};
-	vector<string> tkn(trm,trm+4);
+//	string trm[] = {"include","stdio.h","void","main"};
+//	vector<string> tkn(trm,trm+4);
 	
 	/*if(strlen(str.c_str())==1){
 		chkchar(str[0]);
@@ -107,7 +107,8 @@ int main(){
 	inpt.open("sum.c");
 	
 	string str="";
-	char c;
+	string dbcharstr="";
+	char c,prevchar;
 	
 	char ar[] = {' ' , '#' , '<' , '>' , '{' , '}' , '(' , ')' , '+' , '-' , '*' , '/' , '\'' , '"' , ',' , ';','&','=','[',']'};
 	vector<char> sep(ar,ar+(sizeof(ar)/sizeof(ar[0])));
@@ -115,8 +116,6 @@ int main(){
 	while(inpt.get(c)){
 		
 		if(find(sep.begin(),sep.end(),c) != sep.end() || c == '\n' || c == '\t'){
-			//cout<<"\t\tseP: "<<c<<endl;
-			//cout<<"string empty?: "<<str.empty();
 			
 			if(find(sep.begin(),sep.end(),c) != sep.end()){
 				if(c=='"' && !quoteflag){
@@ -124,6 +123,8 @@ int main(){
 					cout<<c<<"\t\tTRM"<<endl;				
 				}else if (c=='"' && quoteflag)
 					quoteflag = false;
+					
+					//load entire string in double quotes in a variable 
 				if(quoteflag){
 					//cout<<"\t\t\t "<<str<<endl;
 					if(c==' ' || (find(sep.begin(),sep.end(),c) == sep.end() && c != '\n' && c != '\t') ){
@@ -131,14 +132,50 @@ int main(){
 						continue;
 					}
 				}else{
-					if(str!=""){
+					//handle the string inside double quotes
+					if(str!="" && c=='"'){
+						cout<<str;
+						cout<<"\t\tLIT\n";
+					}
+					else if(str!="" && !quoteflag){
 						cout<<str;
 						chkstr(str);
 					}
+					
 					if(c!=' '){
-						cout<<c;
-						chkchar(c);
+						//cout<<"\t\t\tchar: "<<c<<" f: "<<dbcharflag<<endl; 
+						if(dbcharflag){
+							if(prevchar==c){
+								dbcharstr += prevchar;
+								dbcharstr += c;
+								
+								cout<<dbcharstr;
+								chkstr(dbcharstr);
+								
+								dbcharstr.clear();
+								dbcharflag = false;
+								prevchar = '?';	//set to a random char
+								continue;
+							}else{
+								cout<<c;
+								chkchar(c);
+								dbcharflag = false;
+								prevchar='?';
+							}
+							dbcharflag = false;
+						}
+						//handle the double operators == ++ --
 						
+						else if( (c=='+' || c=='-' || c=='=') && (!dbcharflag) ) {
+							dbcharflag = true;
+							//cout<<"\t\t\ttrue for"<<c<<endl;
+							prevchar = c;
+							continue;
+						}
+						else{
+							cout<<c;
+							chkchar(c);
+						}
 					}
 					str.clear();
 				}

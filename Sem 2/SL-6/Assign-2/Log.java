@@ -1,6 +1,7 @@
-package report;
+package logp;
 
 import java.io.IOException;
+
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
@@ -14,7 +15,9 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.util.GenericOptionsParser;
 
-public class WeatherReport {
+
+public class Log {
+
 	public static void main(String args[]) throws Exception {
 		
 		Configuration c = new Configuration();
@@ -25,85 +28,78 @@ public class WeatherReport {
 		
 		Path output=new Path(files[1]);
 		
-		Job j=new Job(c,"weather-reporter");
+		Job j=new Job(c,"logparser");
 		
-		j.setJarByClass(WeatherReport.class);
-		j.setMapperClass(MapWeather.class);
-		j.setReducerClass(ReduceWeather.class);
+		j.setJarByClass(Log.class);
+		j.setMapperClass(MapLog.class);
+		j.setReducerClass(ReduceLog.class);
 		j.setOutputKeyClass(Text.class);
 		j.setOutputValueClass(IntWritable.class);
 		
 		FileInputFormat.addInputPath(j, input);
 		FileOutputFormat.setOutputPath(j, output);
 		System.exit(j.waitForCompletion(true)?0:1);
-		
 	}
-	
-	public static class MapWeather extends Mapper<LongWritable, Text, Text, IntWritable>{
+
+	public static class MapLog extends Mapper<LongWritable, Text, Text, IntWritable>{
 		public void map(LongWritable key, Text value, Context con) throws IOException, InterruptedException
 		{
+			int cnt = 0;
+			Text  outputkey = null;
+			IntWritable outputValue = null;
 			String content = value.toString();
-			String lines[]  = content.split("\n");
 			
-			String year = null;
-			String temp = null;
+			String lines[]  = content.split("\n"); 
 			
-			IntWritable val = null;
-			Text opkey = null;
+			for(String w : lines) {
 			
-			for(String line : lines) {
-				year = line.substring(15,19);
-				temp = line.substring(87,92);
+				String[] words=w.split(",");
+				outputkey = new Text(words[0].trim());
+				int dif = Integer.parseInt(words[2]) - Integer.parseInt(words[1]);
+				outputValue = new IntWritable(dif);
 				
-				opkey = new Text(year);
-				val = new IntWritable(Integer.parseInt(temp));
+				con.write(outputkey, outputValue);
 				
-				con.write(opkey,val);
 			}
-			
 		}
 	}
 	
-	public static class ReduceWeather extends Reducer<Text, IntWritable, Text, IntWritable>
+	public static class ReduceLog extends Reducer<Text, IntWritable, Text, IntWritable>
 	{
-		String Wmin = null;
-		String Wmax = null;
 		Text Seperator = new Text("-----------------------");
-		int min = 9999;
-		int max = 0;
+		int max=0,min=37899;
+		String Tmax = "abc";
+		String Tmin = "efg";
 		public void reduce(Text word, Iterable<IntWritable> values, Context con) throws IOException, InterruptedException
 		{
-			int norc = 1;	//to count no of records
+			try {
 			int sum = 0;
-			for(IntWritable value : values) {
-				//con.write(word, value);
+			for (IntWritable value : values) {
 				sum += value.get();
-				norc++;
 			}
 			
-			sum = sum/norc;
-			
 			if(sum < min) {
-				Wmin = word.toString();
+				Tmin = word.toString();
 				min = sum;
 			}
 			if(sum > max) {
-				Wmax = word.toString();
+				Tmax = word.toString();
 				max = sum;
 			}
-			
 			con.write(word, new IntWritable(sum));
 			
+			//con.write(Tmax, new IntWritable(max));
+			//con.write(Tmin, new IntWritable(min));
+			}catch(Exception ex) {
+				System.out.println(ex.toString());
+				ex.printStackTrace();
+			}
 		}
-		
+		//a func to write final result
 		protected void cleanup(Context context) throws IOException, InterruptedException {
 			context.write(Seperator, new IntWritable(1));
-			context.write(new Text(Wmax), new IntWritable(max));
-			context.write(new Text(Wmin), new IntWritable(min));
+			context.write(new Text(Tmax), new IntWritable(max));
+			context.write(new Text(Tmin), new IntWritable(min));
 	    }
-		
 	}
-	
-	
-	
 }
