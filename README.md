@@ -1,2 +1,2 @@
-# TEIT
-All assignment of Third Year Info Tech SPPU 
+# BEIT
+Assignments of BEIT SPPU
