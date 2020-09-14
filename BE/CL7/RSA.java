@@ -1,4 +1,4 @@
-import java.math.BigInteger;
+import java.math.*;
 import java.util.Random;
 
 public class RSA{
@@ -31,7 +31,7 @@ public class RSA{
 	public static void main(String[] args){
 		RSA rsa = new RSA();
 		DataInputStream inp = new DataInputStream(System.in);
-		string msg;
+		String msg;
 		System.out.print("Enter your message : ");
 		msg = inp.readLine();
 		System.out.println("String to encrypt: " + msg);

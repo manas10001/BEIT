@@ -19,11 +19,11 @@ double gcd(int n, int m){
 
 int main(){
 	double p,q,n,e,d,phi;
-	
+
+	//two primes	
 	p = 4517;
 	q = 4513;
 
-	
 	//calc n 
 	n = p * q;
 	
@@ -40,7 +40,7 @@ int main(){
             e++;
     }
 	
-	cout<<"Generated e: "<<e<<endl;
+//	cout<<"Generated e: "<<e<<endl;
 	
 	double msg;
 	cout<<"Enter integer to encrypt: ";
@@ -60,5 +60,4 @@ int main(){
 	cout<<"Encrypted: "<<enc<<endl;
 	
 	cout<<"Decrypted: "<<dec<<endl;
-		
 }
