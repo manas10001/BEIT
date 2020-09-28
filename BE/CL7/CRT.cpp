@@ -51,10 +51,7 @@ int main(){
 
 	vector<int> no1;
 	vector<int> no2;
-//	no1.push_back(2);
-//	no1.push_back(4);
-//	no1.push_back(5);
-//	
+
 	int max = 3,t1, t2;
 	while(max--){
 		cout<<"Enter values of expression: ";
@@ -62,9 +59,6 @@ int main(){
 		no1.push_back(t1);
 		no2.push_back(t2);
 	}
-//	no2.push_back(3);
-//	no2.push_back(5);
-//	no2.push_back(7);
 	
 	cout<<"x = "<<crt(no1,no2)<<endl;
 	return 0;
