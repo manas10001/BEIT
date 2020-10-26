@@ -1,7 +1,17 @@
-#ignore class files
+#ignore class and .out files
 .class
 
-#ignore mp3 and mp4
+#ignore multimedia files 
 .mp3
 .mp4
+.svg
+.png
+.jpeg
+.jpg
 
+#ignore jaw and war
+.war
+.jar
+
+#ignore datasets
+.csv
