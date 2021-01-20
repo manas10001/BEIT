@@ -1,18 +1,18 @@
 #ignore class and .out files
-.class
-.out
+*.class
+*.out
 
 #ignore multimedia files 
-.mp3
-.mp4
-.svg
-.png
-.jpeg
-.jpg
+*.mp3
+*.mp4
+*.svg
+*.png
+*.jpeg
+*.jpg
 
 #ignore jaw and war
-.war
-.jar
+*.war
+*.jar
 
 #ignore datasets
-.csv
+*.csv
