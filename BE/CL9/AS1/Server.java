@@ -19,26 +19,26 @@ class Server{
 			sock = serversock.accept();
 			System.out.println("Client Connected!");
 			
-			//read the inputstream from client socket
+			//read the inputstream from socket
 			dsin = new DataInputStream(new BufferedInputStream(sock.getInputStream()));
 			
-			//stream to write msg to client
+			//stream to read msg from cmdline
 			cmdin = new DataInputStream(System.in);
 
-			//send mg to client
+			//stream to write to socket
 			dsout = new DataOutputStream(sock.getOutputStream());
 			
 			mymsg = "";
 			msg = "";
 			
-			//keep communicating until adios is mentioned by either sides
-			while(!mymsg.equals("adios")){
+			//keep communicating until bye is mentioned by either sides
+			while(!mymsg.equals("bye")){
 				//read clients msg
 				msg = dsin.readUTF();
 				System.out.println("Client: "+msg);
 				
-				//break connection if client says adios
-				if(msg.equals("adios"))
+				//break connection if client says bye
+				if(msg.equals("bye"))
 					break;
 				
 				//write our msg

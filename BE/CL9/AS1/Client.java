@@ -17,23 +17,23 @@ class Client{
 			//read clients input from terminal
 			cmdin = new DataInputStream(System.in);
 					
-			//send output to server
+			//send output to socket
 			dsout = new DataOutputStream(sock.getOutputStream());
 			
-			//read the inputstream from server socket
+			//read the inputstream from socket (servers msg)
 			dsin = new DataInputStream(new BufferedInputStream(sock.getInputStream()));
 			
 			mymsg = "";
 			msg = "";
 			
-			//keep communicating until adios is mentioned by either sides
-			while(!msg.equals("adios")){
+			//keep communicating until bye is mentioned by either sides
+			while(!msg.equals("bye")){
 				//send msg to server
 				mymsg = cmdin.readLine();
 				dsout.writeUTF(mymsg);
 				
-				//break connection if client says adios
-				if(mymsg.equals("adios"))
+				//break connection if client says bye
+				if(mymsg.equals("bye"))
 					break;
 				
 				//recieve from server
