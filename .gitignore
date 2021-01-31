@@ -1,3 +1,5 @@
+#ignore Experiments folder
+Experiments/
 #ignore class and .out files
 *.class
 *.out
