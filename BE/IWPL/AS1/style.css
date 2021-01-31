@@ -131,7 +131,7 @@ input:hover{
     color: rgb(255, 255, 255);
 }
 label{
-    padding-left:70px;
+    padding-left:5px;
     float: left;
 }
 legend,fieldset{
