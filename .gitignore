@@ -12,9 +12,11 @@ Experiments/
 *.jpeg
 *.jpg
 
-#ignore jaw and war
+#ignore jaw and war zip tar
 *.war
 *.jar
+*.zip
+*.tar
 
 #ignore datasets
 *.csv
