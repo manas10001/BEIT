@@ -25,10 +25,10 @@
                             <fieldset id="fs1">
                                 <legend>Account Details</legend>
                              <label>Login ID:*</label><br>
-                             <input type="text" id="login" name="login" placeholder="Login-ID">
+                             <input type="text" id="login" name="login" onkeyup="liveValidateBlank('login'); liveValidateStr('login');" placeholder="Login-ID">
                             
                              <label>Password:*</label><br>
-                             <input type="password" id="password" name="pass" placeholder="Password">
+                             <input type="password" id="password" name="pass" onkeyup="liveValidateBlank('password')" placeholder="Password">
                            
                              </fieldset>
                          <br><br>
@@ -39,5 +39,6 @@
                 <a class="link" href="./register.html">Not a member? Register!</a>
             </div>
         </div>
+        <script type="text/javascript" src="./validator.js"></script>
     </body>
 </html>
