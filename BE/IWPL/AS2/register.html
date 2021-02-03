@@ -25,16 +25,16 @@
                             <fieldset id="fs1">
                                 <legend>Account Details</legend>
                             <label>Uesrname:*</label><br>
-                            <input type="text" id="login" name="login" autocomplete="off";" placeholder="Username">
+                            <input type="text" id="login" name="login" autocomplete="off" onkeyup="liveValidateBlank('login'); liveValidateStr('login');" placeholder="Username">
                                 
                             <label>Email ID:*</label><br>
-                            <input type="email" id="mail" name="mail" placeholder="abc@h1.com">
+                            <input type="email" id="mail" name="mail" onkeyup="liveValidateBlank('mail')" placeholder="abc@h1.com">
 
                             <label>Password:*</label><br>
-                            <input type="password" id="password" name="pass" placeholder="Password">
+                            <input type="password" id="password" name="pass" onkeyup="liveValidateBlank('password')" placeholder="Password">
                             
                             <label>Retype Password:*</label><br>
-                            <input type="password" id="repassword" name="repass" placeholder="Retype Password">
+                            <input type="password" id="repassword" name="repass" onkeyup="liveValidateBlank('repassword')" placeholder="Retype Password">
                             
                              </fieldset>
                          <br><br>
@@ -45,5 +45,6 @@
                 <a class="link" href="./login.html">Already Registered? Login!</a>
             </div>
         </div>
+        <script type="text/javascript" src="./validator.js"></script>
     </body>
 </html>

@@ -1,0 +1,144 @@
+body {
+  background-color: whitesmoke;
+}
+/* navbar start*/
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 70px;
+  background-color: white;
+  box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.6);
+  z-index: 2;
+}
+.navmenu {
+  float: right;
+}
+.navitem {
+  color: #000;
+  text-decoration: none;
+  margin: 15px;
+  line-height: 40px;
+}
+.navitem:hover{
+    color:blue;
+}
+.active{
+    color: blue;
+}
+/* navbar */
+/* card */
+
+.content {
+  position: relative;
+  margin-top: 100px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.card {
+  background-color: #fff;
+  margin-bottom: 40px;
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: 10px 10px 20px 10px rgba(0, 0, 0, 0.09);
+  padding-bottom: 20px;
+}
+.card:hover{
+    box-shadow: 10px 10px 20px 10px rgba(0, 0, 0, 0.4);
+}
+.card-sm {
+    width: 500px;
+}
+.card-md{
+    width: 900px;
+}
+.card-lg {
+  width: 700px;
+}
+.card-xlg{
+    width: 90vw;
+    padding-top: 20px;
+}
+.card-image {
+  width: 100%;
+  height: 300px;
+  position: relative;
+  object-position: center;
+}
+.card-body {
+  padding: 20px;
+}
+.card-title {
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+.card-content {
+  font-size: 15px;
+  text-align: justify;
+}
+strong{
+  font-size: large;
+}
+li{
+  font-weight: bold;
+}
+/* card */
+.link{
+  padding-top: 20px;  font-size: large;
+    text-decoration: none;
+    color: blue;
+}
+
+/* login/register */
+.forms{
+    font-size: 15px;
+    text-align: center;
+}
+input{
+    border-radius: 10px;
+    color: black;
+    padding: 20px 10px;
+    border: 1px solid #ccc;
+    min-width: 45vw;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+input:hover{
+    display: inline-block;
+    box-shadow: 0 0 20px rgba(0,0,0,0.6);
+}
+.logbtn{
+    background: rgb(255,255,255); 
+    border: 1px solid #2AA600;
+    border-radius: 10px;
+    color: rgb(0, 0, 0);
+    padding: 10px 15px;
+    min-width: 120px;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+}
+.logbtn:hover{
+    background: #2AA600;
+    color: rgb(255, 255, 255);
+}
+label{
+    padding-left:5px;
+    float: left;
+}
+legend,fieldset{
+    border-radius: 10px;
+    padding: 10px;
+}
+input:focus{
+    outline: none;
+}
+/* login/register */
