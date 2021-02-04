@@ -6,29 +6,28 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
-public class Register extends AppCompatActivity {
+public class Home extends AppCompatActivity {
 
-    private TextView goto_login;
-    private Button register;
-
+    private Button leave;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+        setContentView(R.layout.activity_home);
 
-        goto_login = findViewById(R.id.login);
+        Toast.makeText(Home.this,"Login Success", Toast.LENGTH_SHORT).show();
 
-        goto_login.setOnClickListener(new View.OnClickListener() {
+        leave = findViewById(R.id.leave);
+
+        leave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 try {
-                    Intent intent = new Intent(Register.this, MainActivity.class);
+                    Intent intent = new Intent(Home.this, MainActivity.class);
                     startActivity(intent);
                 }catch(Exception e){
-                    Toast.makeText(Register.this,e.toString(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(Home.this,e.toString(), Toast.LENGTH_LONG).show();
                 }
             }
         });

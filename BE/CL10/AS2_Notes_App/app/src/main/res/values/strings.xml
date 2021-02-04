@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Notes_App</string>
+    <string name="app_name">Notes</string>
     <string name="dont_hav_acc"><u>Don\'t have an account?</u></string>
     <string name="Welcome_login">Welcome Back \n<b>Login Here</b></string>
     <string name="reg_here">Hello \n<b>Enter your details to register</b></string>
     <string name="alread_hav_acc"><u>Already own an account?</u></string>
     <string name="forgot_pass"><u>Forgot Password?</u></string>
+    <string name="welcome_home"><b>Hello User</b></string>
 </resources>
