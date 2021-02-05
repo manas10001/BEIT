@@ -11,4 +11,3 @@ public class AuthenticatorImpl extends UnicastRemoteObject implements Authentica
             return (username.equals("manas") && password.equals("password"));
     }
 }
-

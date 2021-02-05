@@ -12,6 +12,7 @@ public class Client {
             //lookup method finds the reference of remote object
             Authenticator authenticator = (Authenticator)Naming.lookup(url);
             
+            //user input
             sc = new Scanner(System.in);
             System.out.print("Enter Username: ");
             username = sc.nextLine();
