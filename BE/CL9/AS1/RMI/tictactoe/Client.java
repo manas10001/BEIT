@@ -14,7 +14,7 @@ public class Client {
 
     //print board
     public static void printBoard(ArrayList<Integer> board){
-        clearTerm();
+        // clearTerm();
         System.out.println("Current Board: \n");
         for(int i = 0; i < 9; i++){
             char toPrint = (char) (i+1+'0');
@@ -31,34 +31,60 @@ public class Client {
         }
     }
 
+    //handles win lose or tie
+    public static boolean handleWinner(ArrayList<Integer> board, TTTServer ttt) throws RemoteException{
+        if(ttt.howFull(board) >= 5){
+            System.out.println("-----------------------------Checking for winner");
+            int result = ttt.determineWinner(board);
+            if(result == -1){
+                System.out.println("Its a tie!");
+                return true;
+            }else if(result == 1){
+                System.out.println("You Win!");
+                return true;
+            }else if(result == 2){
+                System.out.println("You Lost!");
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static void letsPlay(ArrayList<Integer> board, TTTServer ttt, Scanner sc) throws RemoteException{
         boolean keepPlaying = true;
         int move;
 
         while(keepPlaying){
             printBoard(board);
+
+            if(handleWinner(board, ttt)){
+                keepPlaying = false;
+                continue;
+            }
+
             System.out.print("Enter your move: ");
             move = sc.nextInt();
-            //if(isValidMove(move, board)){}
-            //clients move; server will add its move in arraylist
-            board.add(move-1, 1);
-
-            if(ttt.howFull(board) > 5){
-                int result = ttt.determineWinner(board);
-                if(result == 0){
+            
+            //clients turn will be skipped if move chosen is invalid
+            if(ttt.isValidMove(move, board)){
+                //clients move; server will return its move and we will add it to board
+                board.set(move-1, 1);
+                System.out.println("-----------------------------Board after your move");
+                printBoard(board);
+        
+                if(handleWinner(board, ttt)){
                     keepPlaying = false;
-                    System.out.println("Its a tie!");
-                }else if(result == 1){
-                    keepPlaying = false;
-                    System.out.println("You Win!");
-                }else if(result == 2){
-                    keepPlaying = false;
-                    System.out.println("You Lost!");
-                }else{
-                    ttt.serverMove(board);
-                    printBoard(board);
+                    continue;
                 }
+            }else{
+                System.out.println("You made a mistake and lost your turn!");
             }
+
+            System.out.println("-----------------------------Server will play");
+            int sMove = ttt.serverMove(board);
+            // System.out.println("-----------------------------Server takes"+ sMove);
+            board.set(sMove, 2);
+
         }
     }
 

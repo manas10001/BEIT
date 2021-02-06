@@ -9,16 +9,22 @@ public class TTTServerImpl extends UnicastRemoteObject implements TTTServer{
         super();
     }
 
-    //chooses the servers move
-    public void serverMove(ArrayList<Integer> board) throws RemoteException{
+    public boolean isValidMove(int move, ArrayList<Integer> board) throws RemoteException{
+        if(board.get(move) == 0)
+            return true;
+        return false;
+    }
+
+    //chooses the servers move and returns its position
+    public int serverMove(ArrayList<Integer> board) throws RemoteException{
         //choose a field and place your token
         //currently server just puts token in first available slot
         for(int i = 0; i < 9; i++){
             if(board.get(i) == 0){
-                board.add(i,2);
-                break;
+                return i;
             }
         }
+        return -1;
     }
 
     //returns how full is the board
@@ -34,13 +40,13 @@ public class TTTServerImpl extends UnicastRemoteObject implements TTTServer{
 
     //determines result of match
     /*determines winner or determines tie
-        -1 = undetermined
-        0 = tie
+        -1 = tie
+        0 = undetermined
         1 = client
         2 = server
     */
     public int determineWinner(ArrayList<Integer> board) throws RemoteException{
-        int result = -1;
+        int result = 0;
 
         if(board.get(0) == board.get(1) && board.get(1) == board.get(2))
             result = board.get(0);
@@ -67,8 +73,8 @@ public class TTTServerImpl extends UnicastRemoteObject implements TTTServer{
             result = board.get(2);
 
         //if we cant find a winner and board is full its a tie
-        if(result == -1 && howFull(board) == 9)
-            result = 0;
+        if(result == 0 && howFull(board) == 9)
+            result = -1;
 
         return result;
     }
