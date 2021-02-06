@@ -19,7 +19,7 @@ public class Register extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        goto_login = findViewById(R.id.login);
+        goto_login = findViewById(R.id.change);
 
         goto_login.setOnClickListener(new View.OnClickListener() {
             @Override

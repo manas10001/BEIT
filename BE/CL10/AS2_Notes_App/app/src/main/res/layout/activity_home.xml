@@ -43,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="50dp"
                 android:layout_marginBottom="50dp"
-                android:text="Notes Will Appear Here"
+                android:text="Updates Will Appear Here"
                 android:textColor="#000"
                 android:textSize="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
