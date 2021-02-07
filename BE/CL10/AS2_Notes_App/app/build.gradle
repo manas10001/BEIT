@@ -33,4 +33,5 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     //card view support
     implementation "androidx.cardview:cardview:1.0.0"
+
 }
