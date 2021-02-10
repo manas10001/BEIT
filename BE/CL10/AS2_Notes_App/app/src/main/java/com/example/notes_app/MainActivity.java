@@ -48,7 +48,8 @@ public class MainActivity extends AppCompatActivity {
                     mail = email.getText().toString();
                     pass = passwd.getText().toString();
 
-                    if(mail.equals("a@g.co") && pass.equals("123")){
+//                    if(mail.equals("a@g.co") && pass.equals("123")){
+                    if(true){
                         Intent intent = new Intent(MainActivity.this, Home.class);
                         startActivity(intent);
                     }else{

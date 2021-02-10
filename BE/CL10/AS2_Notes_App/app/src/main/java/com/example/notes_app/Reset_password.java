@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 public class Reset_password extends AppCompatActivity {
     EditText oldPassword, newPassword, reNewPassword;
-    Button change, cancle;
+    Button change, cancel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +23,7 @@ public class Reset_password extends AppCompatActivity {
         reNewPassword = findViewById(R.id.reNewPassword);
 
         change = findViewById(R.id.change);
-        cancle = findViewById(R.id.cancle);
+        cancel = findViewById(R.id.cancel);
 
         //change pass
         change.setOnClickListener(new View.OnClickListener() {
@@ -38,7 +38,7 @@ public class Reset_password extends AppCompatActivity {
         });
 
         //cancle operation go to home
-        cancle.setOnClickListener(new View.OnClickListener() {
+        cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 try {
