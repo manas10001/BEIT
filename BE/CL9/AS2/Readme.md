@@ -6,6 +6,6 @@ We need to set MPJ_HOME enviroment variable because it is used by internal files
 
 Set it by using `export MPJ_HOME=mpj/`
 
-Compile code: javac -cp $MPJ_HOME/lib/mpj.jar JavaCode.java
+Compile code: `javac -cp $MPJ_HOME/lib/mpj.jar JavaCode.java`
 
-Run code: $MPJ_HOME/bin/mpjrun.sh -np 2 JavaCode
+Run code: `$MPJ_HOME/bin/mpjrun.sh -np 2 JavaCode`
