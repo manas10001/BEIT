@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+
+<!-- 
+ 
+ The MIT License
+
+ Copyright (c) 2005 - 2013
+   1. SEECS National University of Sciences and Technology (NUST), Pakistan
+   2. Amjad Aziz (2013 - 2013)
+   3. Rizwan Hanif (2013 - 2013)
+   4. Aleem Akhtar (2013 - 2013)
+   5. Mohsan Jameel (2013 - 2013)
+   6. Aamir Shafi (2005 -2013) 
+   7. Bryan Carpenter (2005 - 2013)
+ 
+ Permission is hereby granted, free of charge, to any person obtaining
+ a copy of this software and associated documentation files (the
+ "Software"), to deal in the Software without restriction, including
+ without limitation the rights to use, copy, modify, merge, publish,
+ distribute, sublicense, and/or sell copies of the Software, and to
+ permit persons to whom the Software is furnished to do so, subject to
+ the following conditions:
+
+ The above copyright notice and this permission notice shall be included
+ in all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+ NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+ OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR
+ THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ 
+/*
+ * File         : plugin.xml 
+ * Author       : Amjad Aziz, Rizwan Hanif, Aleem Akhtar, Mohsan Jameel, Aamir Shafi
+ * Created      : December 30, 2013 6:00:57 PM 2013
+ * Revision     : $
+ * Updated      : $
+ */
+-->
+
+<plugin>
+<!-- For Local MPJ Express Application in Both Debug and Run Configuration ... -->
+<extension point="org.eclipse.debug.core.launchConfigurationTypes">
+    <launchConfigurationType
+        name="MPJExpress Application"
+        delegate="mpj_express_debugger.JavaLaunchDelegate"
+        modes="run,debug"
+        sourceLocatorId="org.eclipse.jdt.launching.sourceLocator.JavaSourceLookupDirector"
+        sourcePathComputerId="org.eclipse.jdt.launching.sourceLookup.javaSourcePathComputer"               
+        id="mpj_express_debugger.mpjExpress">        
+    </launchConfigurationType>
+</extension>
+
+
+<extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+    <launchConfigurationTypeImage
+        icon="$nl$/icons/mpjexpress.gif"
+        configTypeID="mpj_express_debugger.mpjExpress"
+        id="mpj_express_debugger.mpjExpress.launchConfigurationTypeImages">
+    </launchConfigurationTypeImage>
+</extension>
+
+
+<extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+    <launchConfigurationTabGroup
+        type="mpj_express_debugger.mpjExpress"
+        class="mpj_express_debugger.MPJExpressTabGroup"
+        id="mpj_express_debugger.mpjExpress.launchConfigurationTabGroups">
+    </launchConfigurationTabGroup>
+</extension>
+ 
+<!--For Remote MPJ Express Application in Debug Configuration ... -->
+
+<extension point="org.eclipse.debug.core.launchConfigurationTypes">
+    <launchConfigurationType
+        name="Remote MPJExpress Application"
+        delegate="mpj_express_debugger.JavaRemoteApplicationLaunchConfigurationDelegate"
+        modes="debug"
+        sourceLocatorId="org.eclipse.jdt.launching.sourceLocator.JavaSourceLookupDirector"
+        sourcePathComputerId="org.eclipse.jdt.launching.sourceLookup.javaSourcePathComputer"               
+        id="mpj_express_debugger.mpjExpressRemote">        
+    </launchConfigurationType>
+</extension>
+
+<extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+    <launchConfigurationTypeImage
+        icon="$nl$/icons/mpjexpress.gif"
+        configTypeID="mpj_express_debugger.mpjExpressRemote"
+        id="mpj_express_debugger.mpjExpressRemote.launchConfigurationTypeImages">
+    </launchConfigurationTypeImage>
+</extension>
+
+
+<extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+    <launchConfigurationTabGroup
+        type="mpj_express_debugger.mpjExpressRemote"
+        class="mpj_express_debugger.RemoteMPJExpressTabGroup"
+        id="mpj_express_debugger.mpjExpressRemote.launchConfigurationTabGroups">
+    </launchConfigurationTabGroup>
+</extension>
+
+
+
+</plugin>

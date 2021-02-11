@@ -1,0 +1,180 @@
+<?xml version="1.0"?>
+<project name="test" default="all" basedir=".">
+  <property name="lib.dir" value="../lib/"/>  
+    <target name="compile" description="compiles mpj code">    
+       <javac srcdir="jgf_mpj_benchmarks/jgfutil" 
+         classpath="${lib.dir}/mpj.jar"
+	 debug="true"/>          
+       <javac srcdir="jgf_mpj_benchmarks/section1" 
+         classpath="${lib.dir}/mpj.jar"
+	 debug="true"/>   
+       <javac srcdir="jgf_mpj_benchmarks/section1" 
+         classpath="${lib.dir}/mpj.jar"
+	 debug="true"/>   
+       <javac srcdir="jgf_mpj_benchmarks/section2" 
+         classpath="${lib.dir}/mpj.jar"
+	 debug="true"/>   
+       <javac srcdir="jgf_mpj_benchmarks/section2/crypt" 
+         classpath="${lib.dir}/mpj.jar"
+	 debug="true"/>   
+       <javac srcdir="jgf_mpj_benchmarks/section2/lufact" 
+         classpath="${lib.dir}/mpj.jar" 
+	 debug="true"/>   
+       <javac srcdir="jgf_mpj_benchmarks/section2/series" 
+         classpath="${lib.dir}/mpj.jar" 
+	 debug="true"/>   
+       <javac srcdir="jgf_mpj_benchmarks/section2/sor" 
+         classpath="${lib.dir}/mpj.jar"
+	 debug="true"/>   
+       <javac srcdir="jgf_mpj_benchmarks/section2/sparsematmult" 
+         classpath="${lib.dir}/mpj.jar" 
+	 debug="true"/>   
+       <javac srcdir="jgf_mpj_benchmarks/section3" 
+         classpath="${lib.dir}/mpj.jar"
+	 debug="true"/>   
+       <javac srcdir="jgf_mpj_benchmarks/section3/moldyn" 
+         classpath="${lib.dir}/mpj.jar" 
+	 debug="true"/>   	       
+       <javac srcdir="jgf_mpj_benchmarks/section3/montecarlo" 
+         classpath="${lib.dir}/mpj.jar" 
+	 debug="true"/>   	       
+       <javac srcdir="jgf_mpj_benchmarks/section3/raytracer" 
+         classpath="${lib.dir}/mpj.jar" 
+	 debug="true"/>
+       <javac srcdir="microbenchmarkmpiJava" 
+         classpath="${lib.dir}/mpj.jar" 
+	 debug="true"/>   	       
+       <javac srcdir="mpjdev/buffertest" 
+         classpath="${lib.dir}/mpj.jar"
+	 debug="true"/>   
+       <javac srcdir="mpjdev/perftest" 
+         classpath="${lib.dir}/mpj.jar"
+	 debug="true"/>   
+       <javac srcdir="mpi/pt2pt" 
+         classpath="${lib.dir}/mpj.jar" 
+	 debug="true"/>   
+       <javac srcdir="mpi/pt2pt_ObjSer" 
+         classpath="${lib.dir}/mpj.jar" 
+	 debug="true"/>   
+       <javac srcdir="mpi/dtyp" 
+         classpath="${lib.dir}/mpj.jar" 
+	 debug="true"/>   
+       <javac srcdir="." includes="TestSuite.java" 
+         classpath=".:${lib.dir}/mpj.jar" debug="true"/>   
+       <javac srcdir="mpi/dtyp_ObjSer" classpath="${lib.dir}/mpj.jar" 
+	 debug="true"/>   
+       <javac srcdir="mpi/group" classpath="${lib.dir}/mpj.jar" 
+         debug="true"/>   
+       <javac srcdir="mpi/ccl" classpath="${lib.dir}/mpj.jar" 
+         debug="true"/>   
+       <javac srcdir="mpi/ccl_ObjSer" classpath="${lib.dir}/mpj.jar" 
+         debug="true"/>   
+       <javac srcdir="mpi/ccl_ObjSer/reduceO" 
+         classpath="${lib.dir}/mpj.jar" debug="true"/>   
+       <javac srcdir="mpi/ccl_ObjSer/allreduceO" 
+         classpath="${lib.dir}/mpj.jar" 
+	 debug="true"/>  
+       <javac srcdir="mpi/ccl_ObjSer/reduce_scatterO" 
+         classpath="${lib.dir}/mpj.jar" 
+	 debug="true"/>   
+       <javac srcdir="mpi/ccl_ObjSer/scanO" 
+         classpath="${lib.dir}/mpj.jar" debug="true"/>   
+       <javac srcdir="mpi/topo" classpath="${lib.dir}/mpj.jar" 
+         debug="true"/>   
+       <javac srcdir="mpi/env" classpath="${lib.dir}/mpj.jar"
+         debug="true"/>   
+       <javac srcdir="mpi/signals" 
+         classpath="${lib.dir}/mpj.jar" debug="true"/>   
+       <javac srcdir="mpi/comm" classpath="${lib.dir}/mpj.jar" 
+         debug="true"/>   
+       <javac srcdir="mpi/perf" classpath="${lib.dir}/mpj.jar" 
+         debug="true"/>   
+       <javac srcdir="mpi/threads" classpath="${lib.dir}/mpj.jar" 
+         debug="true"/>   
+       <javac srcdir="xdev" classpath="${lib.dir}/mpj.jar" 
+         debug="true"/>   
+    </target> 
+
+    <target name="jars" description="builds jar files ..">
+      <jar destfile="${lib.dir}/test.jar" basedir="."
+includes="mpjdev/buffertest/*.class mpi/pt2pt/*.class mpi/pt2pt_ObjSer/*.class TestSuite.class mpi/dtyp/*.class mpi/dtyp_ObjSer/*.class mpi/comm/*.class mpi/group/*.class mpi/ccl/*.class mpi/ccl_ObjSer/*.class mpi/ccl_ObjSer/reduceO/*.class mpi/ccl_ObjSer/allreduceO/*.class mpi/ccl_ObjSer/reduce_scatterO/*.class mpi/ccl_ObjSer/scanO/*.class mpi/topo/*.class mpi/env/*.class mpi/signals/*.class mpi/perf/*.class jgf_mpj_benchmarks/jgfutil/*.class jgf_mpj_benchmarks/section1/*.class jgf_mpj_benchmarks/section2/*.class jgf_mpj_benchmarks/section2/crypt/*.class jgf_mpj_benchmarks/section2/lufact/*.class jgf_mpj_benchmarks/section2/series/*.class jgf_mpj_benchmarks/section2/sor/*.class jgf_mpj_benchmarks/section2/sparsematmult/*.class jgf_mpj_benchmarks/section3/*.class jgf_mpj_benchmarks/section3/moldyn/*.class jgf_mpj_benchmarks/section3/montecarlo/*.class jgf_mpj_benchmarks/section3/raytracer/*.class microbenchmarkmpiJava/**/*.class microbenchmarkmpiJava/**/**/*.class mpjdev/perftest/*.class xdev/*.class mpi/threads/*.class">
+        <manifest>
+          <attribute name="Main-class" value="TestSuite" /> 
+          <attribute name="Class-path" value="mpj.jar"/> 
+        </manifest>  
+      </jar>          
+    </target>
+    
+    <target name="clean">
+	<delete>
+	 <fileset dir="." includes="TestSuite.class"/>
+	 <fileset dir="mpjdev/buffertest" includes="*.class"/>
+	 <fileset dir="mpjdev/perftest" includes="*.class"/>
+	 <fileset dir="mpi/pt2pt" includes="*.class"/>
+	 <fileset dir="mpi/pt2pt_ObjSer" includes="*.class"/>
+	 <fileset dir="mpi/threads" includes="*.class"/>
+	 <fileset dir="mpi/dtyp" includes="*.class"/>
+	 <fileset dir="mpi/dtyp_ObjSer" includes="*.class"/>
+	 <fileset dir="mpi/comm" includes="*.class"/>
+	 <fileset dir="mpi/group" includes="*.class"/>
+	 <fileset dir="mpi/ccl" includes="*.class"/>
+	 <fileset dir="mpi/ccl_ObjSer" includes="*.class"/>
+	 <fileset dir="mpi/ccl_ObjSer/reduceO" includes="*.class"/>
+	 <fileset dir="mpi/ccl_ObjSer/allreduceO" includes="*.class"/>
+	 <fileset dir="mpi/ccl_ObjSer/reduce_scatterO" includes="*.class"/>
+	 <fileset dir="mpi/ccl_ObjSer/scanO" includes="*.class"/>
+	 <fileset dir="mpi/topo" includes="*.class"/>
+	 <fileset dir="mpi/env" includes="*.class"/>
+	 <fileset dir="mpi/signals" includes="*.class"/>
+	 <fileset dir="mpi/perf" includes="*.class"/>
+	 <fileset dir="xdev" includes="*.class"/>
+	 <fileset dir="jgf_mpj_benchmarks/jgfutil" includes="*.class"/>
+	 <fileset dir="jgf_mpj_benchmarks/section1" includes="*.class"/>
+	 <fileset dir="jgf_mpj_benchmarks/section2" includes="*.class"/>
+	 <fileset dir="jgf_mpj_benchmarks/section3" includes="*.class"/>
+	 <fileset dir="jgf_mpj_benchmarks/section2/crypt" includes="*.class"/>
+	 <fileset dir="jgf_mpj_benchmarks/section2/lufact" includes="*.class"/>
+	 <fileset dir="jgf_mpj_benchmarks/section2/series" includes="*.class"/>
+	 <fileset dir="jgf_mpj_benchmarks/section2/sor" includes="*.class"/>
+         <fileset dir="jgf_mpj_benchmarks/section2/sparsematmult" 
+	   includes="*.class"/>
+	 <fileset dir="jgf_mpj_benchmarks/section3/moldyn" 
+	   includes="*.class"/>
+	 <fileset dir="jgf_mpj_benchmarks/section3/montecarlo" 
+	   includes="*.class"/>
+	 <fileset dir="jgf_mpj_benchmarks/section3/raytracer" 
+	   includes="*.class"/>
+	 <fileset dir="microbenchmarkmpiJava/allgather" 
+	   includes="*.class"/>
+	 <fileset dir="microbenchmarkmpiJava/allreduce" 
+	   includes="*.class"/>
+	 <fileset dir="microbenchmarkmpiJava/alltoall" 
+	   includes="*.class"/>
+	 <fileset dir="microbenchmarkmpiJava/barrier" 
+	   includes="*.class"/> 
+	 <fileset dir="microbenchmarkmpiJava/broadcast" 
+	   includes="*.class"/>
+	 <fileset dir="microbenchmarkmpiJava/gather" 
+	   includes="*.class"/>
+	 <fileset dir="microbenchmarkmpiJava/pingpong/Bsend" 
+	   includes="*.class"/>
+	 <fileset dir="microbenchmarkmpiJava/pingpong/Rsend" 
+	   includes="*.class"/>
+	 <fileset dir="microbenchmarkmpiJava/pingpong/Send" 
+	   includes="*.class"/>
+         <fileset dir="microbenchmarkmpiJava/pingpong/Ssend" 
+	   includes="*.class"/>
+         <fileset dir="microbenchmarkmpiJava/reduce" includes="*.class"/>
+         <fileset dir="microbenchmarkmpiJava/reducescatter" 
+	   includes="*.class"/>
+	 <fileset dir="microbenchmarkmpiJava/scan" 
+	   includes="*.class"/>
+	 <fileset dir="microbenchmarkmpiJava/scatter" 
+	   includes="*.class"/>
+       </delete>	 	
+     </target>
+     
+
+     <target name="all" depends="compile,jars,clean" description="All"/>
+
+</project>

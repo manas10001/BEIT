@@ -1,0 +1,5 @@
+for i in 0 1 6 7
+	do
+		echo "ssh comp0$i 'killall -s 9 java'"
+		ssh "comp0$i" 'killall -s 9 java'
+	done

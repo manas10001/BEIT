@@ -1,0 +1,120 @@
+      QuickStart Guide: Running MPJ Express on UNIX/Linux/Mac platform
+                  Last Updated: Friday April 17 11:51:20 PKT 2015
+                                Version 0.44
+
+Introduction
+============
+
+MPJ Express is a reference implementation of the mpiJava 1.2 API, which
+is an MPI-like API for Java defined by the Java Grande forum. 
+
+MPJ Express can be configured in two ways: 
+
+1. Multicore Configuration: This configuration is used by developers who want 
+   to execute their parallel Java applications on multicore or shared 
+   memory machines (laptops and desktops).
+
+2. Cluster Configuration: This configuration is used by developers who want to 
+   execute their parallel Java applications on distributed memory platforms
+   including clusters and network of computers. There are four options in the 
+   cluster configuration.
+   
+   i) niodev - uses Java NIO Sockets
+   ii) mxdev - uses Myrinet eXpress (MX) library for Myrinet networks
+   iii) hybdev - for clusters of multicore processors
+   iv) native - uses a native MPI library (like MPICH, MVAPICH, Open MPI) 
+
+
+This document contains steps to help you execute your first MPJ Express program
+on UNIX/Linux/Mac platforms. Windows users should consult README-win.txt.
+
+Pre-requisites
+==============
+
+1. Java 1.6 (stable) or higher (Mandatory)
+2. Apache ant 1.6.2 or higher (Optional)
+3. Perl (Optional)
+4. Native MPI library (Optional): Native MPI library such as MPICH, MVAPICH
+   or Open MPI is required for running MPJ Express in cluster configuration
+   with native device.
+5. CMake (Optional): CMake is used for generating Makefile to compile native 
+   JNI C code
+
+Running MPJ Express Programs in the Multicore Configuration
+===========================================================
+
+1. Download MPJ Express and unpack it. 
+2. Set MPJ_HOME and PATH environmental variables:
+       export MPJ_HOME=/path/to/mpj/
+       export PATH=$MPJ_HOME/bin:$PATH 
+       (These above two lines can be added to ~/.bashrc)
+3. Write your MPJ Express program (HelloWorld.java) and save it. 
+4. Compile: javac -cp .:$MPJ_HOME/lib/mpj.jar HelloWorld.java
+5. Execute: mpjrun.sh -np 4 HelloWorld
+
+Running MPJ Express Programs in the Cluster Configuration
+=========================================================
+
+1. Assuming you have completed step 1 to 4 of the Multicore Configuration.
+2. Write a machines file (name it "machines") stating host names or IP
+   addresses of all machines involved in the parallel execution.
+3. Execution:
+-- For niodev, hybdev and mxdev
+	i) Start daemons: mpjboot machines
+	ii) Execute: mpjrun.sh -np 4 -dev niodev HelloWorld
+		-- For -dev <device> here device can be niodev, 
+		hybdev or mxdev
+	iii) Stop daemons: mpjhalt machines  
+-- For native deive
+	i) Compile JNI wrapper library:
+		a) Make sure cmake (2.6 or above) is installed on the system
+		b) Make sure a native MPI library is installed on the system 
+		   and working. To install MPICH for example go to
+		   http://www.mpich.org/downloads/ and download the native MPI 
+		   library, install and make sure that its working.
+		c) Create build directory: cd $MPJ_HOME/src/natmpjdev/lib; 
+		   			   mkdir build 
+	        d) Generate Makefile using cmake: cmake ..
+		e) make: make 
+		f) install: make install
+	ii) Execute: mpjrun.sh -np 4 -dev native HelloWorld
+
+For detials read the linuxguide.pdf that can be found in $MPJ_HOME/doc
+
+Running MPJ Express Programs on HADOOP Clusters
+=========================================================
+To run your MPJ programs on HADOOP Clusters, please refer to "yarnguide.pdf"
+in $MPJ_HOME/doc folder
+
+Known Issues
+============
+
+1. One of the known issues of MPJ Express in cluster configuration is incorrect 
+   working directroy. This issue is reported on cluster build using Rocks 
+   clusters. MPJRun module of MPJ Express reads the current directory i.e. user
+   directory using System.getProperty("user.dir") It should retrun same path as 
+   Unix 'pwd' command. But it is not giving same result. As a manual work 
+   around for this issue is to use -wdir switch in mpjrun command and giving 
+   path to the current directory where HelloWorld is placed i.e.
+        mpjrun.sh -np 4 -dev niodev -wdir /export/home/aamir/projects/mpj-user/ HelloWorld   
+
+Additional Documentation
+========================
+
+For more details, see $MPJ_HOME/doc/linuxguide.pdf
+
+Contact and Support
+===================
+
+In case you run into issues please consult $MPJ_HOME/doc/linuxguide.pdf. If 
+your query/problem is still not resolved, contact us by emailing: 
+
+1. MPJ Express mailing list: https://lists.sourceforge.net/lists/listinfo/mpjexpress-users
+2. Aamir Shafi (aamir.shafi@seecs.edu.pk)
+3. Mohsan Jameel (mohsan.jameel@seecs.edu.pk)
+4. Bryan Carpenter (bryan.carpenter@port.ac.uk)
+5. Muhammad Ansar Javed (muhammad.ansar@seecs.edu.pk)
+6. Bibrak Qamar (bibrak.qamar@seecs.edu.pk)
+7. Aleem Akhtar (aleem.akhtar@seecs.edu.pk)
+8. Hamza Zafar (11bscshzafar@seecs.edu.pk)
+

@@ -1,0 +1,88 @@
+package mpi.threads ;
+
+import mpi.*;
+import java.util.Arrays;
+
+public class MultiplexNoComm {
+	
+  int DATA_SIZE= 512*1024 ;	
+  int REPEAT = 200 ; 
+  
+  public MultiplexNoComm () {
+  }
+  
+  public MultiplexNoComm (String args[]) throws Exception {
+
+    MPI.Init(args);
+
+    long start, stop, time; 
+
+    int me = MPI.COMM_WORLD.Rank() ;
+    int size = MPI.COMM_WORLD.Size() ; 
+      
+    int intArray [] = new int[DATA_SIZE];
+    int intArray2 [] = new int[DATA_SIZE];
+
+    int intReadArray [] = new int[DATA_SIZE];
+    int intReadArray2 [] = new int[DATA_SIZE];
+		
+    for(int i =0 ; i<DATA_SIZE ; i++) {
+      intArray[i] =  (i+1) + 1000 ;
+      intArray2[i] = (i+1) + 2000 ;
+    }    	
+		
+    if(me == 0) { 
+      int tag = 1000 ; 		
+      
+      start = System.nanoTime() ; 
+ 
+      //omp parallel for default(shared) schedule(static,1) 
+      for(int peer = 1 ; peer< size ; peer++) { 
+        for(int j=0 ; j<REPEAT ; j++) { 	      
+          MPI.COMM_WORLD.Send(intArray,0,DATA_SIZE,MPI.INT,peer,tag);
+	}
+      }
+
+      stop = System.nanoTime(); 
+
+      time = stop - start ; 
+      System.out.println("==="); 
+      System.out.println("time ="+(time/(1000*1000*1000))+" seconds"); 
+      System.out.println("==="); 
+
+    } else { 
+	    
+      int tag = 1000 ;  		
+      for(int k=0 ; k<DATA_SIZE ; k++) { 		 
+        intReadArray[k] = 0; 
+      }
+      
+      for(int j=0 ; j<REPEAT ; j++) { 
+        MPI.COMM_WORLD.Recv(intReadArray,0,DATA_SIZE,MPI.INT,0,tag);
+	
+	if(Arrays.equals(intArray, intReadArray)) {
+	  //System.out.println(" Thread A passed "); 	    
+	}
+	else {
+          System.out.println(" Process <"+me+" failed "); 		    
+	}
+      }
+
+
+    }
+       	
+    MPI.COMM_WORLD.Barrier();
+
+    if(MPI.COMM_WORLD.Rank() == 0) {
+      System.out.println("MultiplexNoComm TEST Completed");	
+    }
+
+    MPI.Finalize();
+
+  } 
+    
+  public static void main(String args[]) throws Exception{
+    MultiplexNoComm test = new MultiplexNoComm(args);
+  }
+
+}

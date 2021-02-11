@@ -1,0 +1,455 @@
+<?xml version="1.0"?>
+
+<project name="mpi" default="all" basedir=".">
+    <property name="mpi.dir" value="src/mpi"/>
+    <property name="doc.dir" value="doc"/>
+    <property name="mpjdev.dir" value="src/mpjdev"/>
+    <property name="mpjdev.javampjdev.dir" value="src/mpjdev/javampjdev"/>
+    <property name="mpjdev.natmpjdev.dir" value="src/mpjdev/natmpjdev"/>
+    <property name="mpjbuf.dir" value="src/mpjbuf"/>
+    <property name="xdev.dir" value="src/xdev/"/>	
+    <property name="niodev.dir" value="src/xdev/niodev"/>
+    <property name="smpdev.dir" value="src/xdev/smpdev"/>   
+    <property name="hybdev.dir" value="src/xdev/hybdev"/>
+    <property name="lib.dir" value="lib/"/>   
+    <property name="src.dir" value="src"/>   
+    <property name="mx.native.dir" value="src/xdev/mxdev/lib"/>
+   
+    <property environment="env"/>
+    <property name="mx_home" value="${env.MX_HOME}"/>
+    <property name="java_home" value="${env.JAVA_HOME}"/>
+    <property name="hadoop_home" value="${env.HADOOP_HOME}"/>
+
+    <condition property="exists.hadoop">
+      <isset property="env.HADOOP_HOME"/>
+    </condition>
+
+    <!-- If Batik toolkit is installed, define environment variable
+         BATIK_HOME to regenerate documentation PNG files from SVG
+    <property environment="env"/> -->
+    <property name="batik.dir" value="${env.BATIK_HOME}"/>
+
+    <!-- If Perl is not available in specified location, generation
+         of Java files from templates will be skipped. -->
+    
+    <property name="perl.executable" value="/usr/bin/perl"/>
+    
+    <target name="havePerl">
+        <available property="perl.present" file="${perl.executable}"/>
+    </target>
+
+    <macrodef name="perl">
+
+        <attribute name="dir"/>
+        <attribute name="script"/>
+
+        <sequential>
+            <exec dir="@{dir}" executable="${perl.executable}">
+	        <arg value="@{script}" />
+            </exec>			
+        </sequential>
+    </macrodef>
+
+    <target name="perlAvailability" depends="havePerl"
+            unless="perl.present">
+        <echo>NOTE: Perl executable not found in expected location.</echo>
+        <echo>      Java files will NOT be regenerated from templates.</echo>
+    </target>
+
+    <target name="generateJava" depends="perlAvailability"
+            if="perl.present">
+        <perl dir="src/mpi" script="generate.pl"/>
+        <perl dir="src/mpjbuf" script="generate.pl"/>
+    </target>
+
+    <target name="cleanJava" depends="perlAvailability"
+            if="perl.present">
+        <perl dir="src/mpjbuf" script="clean.pl"/>
+        <perl dir="src/mpi" script="clean.pl"/>
+    </target>
+
+
+    <target name="compile" description="compiles mpj code"
+            depends="generateJava">
+        
+	<javac srcdir="${src.dir}" 
+	classpath="lib/wrapper.jar:lib/org.mortbay.jetty.jar:
+		   lib/log4j-1.2.11.jar:lib/commons-cli-1.2.jar:
+                   lib\commons-codec-1.8.jar:
+                   lib\commons-io-2.4.jar"
+        sourcepath="${src.dir}"
+        debug="true">
+     	  <exclude name="runtime/starter/MPJAppMaster.java"/>
+	  <exclude name="runtime/starter/MPJYarnClient.java"/>
+	  <exclude name="runtime/starter/MPJYarnWrapper/java"/>
+ 	  <exclude name="runtime/starter/KillYarnApp.java"/>
+	</javac>
+    </target>
+
+    <target name="compile-hadoop" description="compiling hadoop"
+            if="exists.hadoop">
+        <javac srcdir="${src.dir}" sourcepath="${src.dir}" debug="true">
+        <classpath>
+          <fileset dir="lib">
+            <include name="wrapper.jar org.mortbay.jetty.jar 
+                      log4j-1.2.11.jar commons-cli-1.2.jar 
+                      commons-codec-1.8.jar 
+                      commons-io-2.4.jar" />
+            </fileset>
+
+            <fileset dir="${hadoop_home}/share/hadoop/yarn">
+            <include name="*.jar"/>
+            </fileset>
+
+            <fileset dir="${hadoop_home}/share/hadoop/yarn/lib">
+            <include name="*.jar"/>
+            </fileset>
+
+            <fileset dir="${hadoop_home}/share/hadoop/mapreduce">
+            <include name="*.jar"/>
+            </fileset>
+
+            <fileset dir="${hadoop_home}/share/hadoop/mapreduce/lib">
+            <include name="*.jar"/>
+            </fileset>
+
+
+            <fileset dir="${hadoop_home}/share/hadoop/common">
+            <include name="*.jar"/>
+            </fileset>
+
+            <fileset dir="${hadoop_home}/share/hadoop/common/lib">
+            <include name="*.jar"/>
+            </fileset>
+
+            <fileset dir="${hadoop_home}/share/hadoop/tools/lib">
+            <include name="*.jar"/>
+            </fileset>
+
+            <fileset dir="${hadoop_home}/share/hadoop/hdfs">
+            <include name="*.jar"/>
+            </fileset>
+
+            <fileset dir="${hadoop_home}/share/hadoop/hdfs/lib">
+            <include name="*.jar"/>
+            </fileset>
+          </classpath>
+        </javac>
+    </target> 
+
+    <target name="jars" description="builds jar files ..">
+
+   <jar destfile="${lib.dir}/mpj.jar" basedir="src"
+          includes="mpi/*.class 
+                    mpjbuf/*.class 
+                    mpjdev/*.class 
+                    mpjdev/javampjdev/*.class 
+                    xdev/*.class
+                    mpjdev/natmpjdev/*.class
+	  	    xdev/niodev/*.class 
+                    xdev/mxdev/*.class 
+                    xdev/hybdev/*.class">
+	  <manifest>
+            <attribute name="Class-path" value="log4j-1.2.11.jar"/>
+          </manifest>
+    </jar>
+
+    <jar destfile="${lib.dir}/mpiExp.jar" basedir="src"
+          includes="mpi/MPIException.class,
+                    mpjdev/MPJDevException.class,
+                    mpjdev/Request.class,mpjdev/Request$WaitanyQue.class,
+                    mpjdev/Status.class,
+                    mpjdev/CompletionHandler.class,
+                    mpjdev/Constants.class">
+	  <manifest>
+            <attribute name="Class-path" value="log4j-1.2.11.jar"/>
+          </manifest>
+     </jar>
+   
+     <jar destfile="${lib.dir}/mpi.jar" basedir="src"
+          includes="mpi/*.class" excludes="mpi/MPIException.class">
+	  <manifest>
+            <attribute name="Class-path" value="log4j-1.2.11.jar"/> 
+          </manifest>  
+     </jar>
+     
+     <jar destfile="${lib.dir}/mpjbuf.jar" basedir="src"
+          includes="mpjbuf/*.class">
+	  <manifest>
+            <attribute name="Class-path" value="log4j-1.2.11.jar"/> 
+          </manifest>  
+     </jar>
+
+     <jar destfile="${lib.dir}/mpjdev.jar" basedir="src"
+          includes="mpjdev/*.class 
+                    mpjdev/javampjdev/*.class 
+                    mpjdev/natmpjdev/*.class" 
+          excludes="mpjdev/MPJDevException.class,
+                    mpjdev/Request.class,
+                    mpjdev/Request$WaitanyQue.class,
+                    mpjdev/Status.class,
+                    mpjdev/CompletionHandler.class, 
+                    mpjdev/Constants.class">
+	  <manifest>
+            <attribute name="Class-path" value="log4j-1.2.11.jar"/> 
+          </manifest>  
+     </jar>
+
+     <jar destfile="${lib.dir}/xdev.jar" basedir="src"
+          includes="xdev/*.class">
+	  <manifest>
+            <attribute name="Class-path" value="log4j-1.2.11.jar"/> 
+          </manifest>  
+     </jar>
+
+     <jar destfile="${lib.dir}/niodev.jar" basedir="src"
+          includes="xdev/niodev/*.class">
+	  <manifest>
+            <attribute name="Class-path" value="log4j-1.2.11.jar"/> 
+          </manifest>  
+     </jar>
+
+     <jar destfile="${lib.dir}/mxdev.jar" basedir="src"
+          includes="xdev/mxdev/*.class">
+	  <manifest>
+            <attribute name="Class-path" value="log4j-1.2.11.jar"/> 
+          </manifest>  
+     </jar>
+
+     <jar destfile="${lib.dir}/smpdev.jar" basedir="src"
+          includes="xdev/smpdev/*.class">
+	  <manifest>
+            <attribute name="Class-path" value="log4j-1.2.11.jar"/> 
+          </manifest>  
+     </jar>
+  
+     <jar destfile="${lib.dir}/hybdev.jar" basedir="src"
+          includes="xdev/hybdev/*.class">
+          <manifest>
+            <attribute name="Class-path" value="log4j-1.2.11.jar"/>
+          </manifest>
+    </jar>
+
+
+
+    <jar destfile="${lib.dir}/daemon.jar" basedir="src"
+	 includes="runtime/daemon/*.class">
+         <manifest>				
+           <attribute name="Main-class" 
+		      value="runtime.daemon.MPJDaemon" /> 
+	   <attribute name="Class-path" 
+		      value="log4j-1.2.11.jar 
+                             commons-codec-1.8.jar 
+                             commons-io-2.4.jar 
+                             runtimecommon.jar "/> 
+	 </manifest>  
+     </jar>
+
+
+     <jar destfile="${lib.dir}/loader1.jar" basedir="src"
+          includes="runtime/daemon/*.class 
+                    runtime/*.class">
+	  <manifest>
+            <attribute name="Main-class" 
+	               value="runtime.daemon.Wrapper" /> 
+          </manifest> 
+     </jar>
+    
+     <jar destfile="${lib.dir}/loader2.jar" basedir="src"
+          includes="runtime/daemon/*.class runtime/*.class">
+	  <manifest>
+            <attribute name="Main-class" 
+	               value="runtime.daemon.ThreadedWrapper" /> 
+          </manifest>  
+     </jar>
+
+     <jar destfile="${lib.dir}/starter.jar" basedir="src"
+          includes="runtime/starter/*.class"  >
+          <manifest>
+            <attribute name="Main-class" value="runtime.starter.MPJRun" />
+ 	      <attribute name="Class-path" 
+	                 value="org.mortbay.jetty.jar 
+                                log4j-1.2.11.jar 
+                                runtimecommon.jar"/> 
+	  </manifest>  
+     </jar>
+    
+     <jar destfile="${lib.dir}/daemonmanager.jar" basedir="src"
+          includes="runtime/daemonmanager/*.class">
+          <manifest>
+            <attribute name="Main-class" 
+                       value="runtime.daemonmanager.MPJDaemonManager" />
+            <attribute name="Class-path"
+                       value="commons-cli-1.2.jar runtimecommon.jar"/>
+          </manifest>
+     </jar>
+
+     <jar destfile="${lib.dir}/runtimecommon.jar" basedir="src"
+          includes="runtime/common/*.class">            
+          <manifest>
+            <attribute name="Class-path"
+                       value="commons-cli-1.2.jar
+                              commons-codec-1.8.jar"/>
+          </manifest>
+     </jar>
+
+     </target>
+
+    <!-- Hadoop Jar Files -->
+    <target name="hadoop-jars" 
+            description="jar files for hadoop YARN runtime"
+            depends="compile-hadoop,jars"  
+            if="exists.hadoop"> 
+
+    <!-- Yarn Client Jar -->         
+    <jar destfile="${lib.dir}/mpj-yarn-client.jar" basedir="src"
+         includes="runtime/starter/MPJYarnClient.class 
+                   runtime/starter/IOMessagesThread.class
+                   runtime/starter/KillYarnApp.class">
+         <manifest>
+           <attribute name="Main-class" value="runtime.starter.MPJYarnClient" />
+         </manifest>
+    </jar>
+
+    <!-- Application Master Jar -->
+    <jar destfile="${lib.dir}/mpj-app-master.jar" basedir="src"
+         includes="runtime/starter/MPJAppMaster.class">
+                 <manifest>
+                       <attribute name="Main-class" 
+                                  value="runtime.starter.MPJAppMaster" />
+                       </manifest>
+    </jar>
+    
+
+    <!-- Yarn Wrapper Jar -->
+    <jar destfile="${lib.dir}/mpj-yarn-wrapper.jar" basedir="src"
+         includes="runtime/starter/MPJYarnWrapper.class
+		   mpi/*.class 
+                   mpjbuf/*.class 
+                   mpjdev/*.class 
+                   mpjdev/javampjdev/*.class 
+                   xdev/*.class mpjdev/natmpjdev/*.class
+                   xdev/niodev/*.class
+                   xdev/mxdev/*.class 
+                   xdev/hybdev/*.class
+                   xdev/smpdev/*.class
+                   runtime/daemon/*.class 
+                   runtime/*.class">
+                 <manifest>
+                    <attribute name="Main-class" 
+                               value="runtime.starter.MPJYarnWrapper" />
+                 </manifest>
+    </jar>
+  
+    </target>
+
+    <target name="mxlib" description="generates native MX code">
+
+      <javah destdir="${mx.native.dir}" force="yes" 
+             classpath="${src.dir}">
+        <class name="xdev.mxdev.MXDevice"/>
+        <class name="xdev.mxdev.MXSendRequest"/>
+        <class name="xdev.mxdev.MXRecvRequest"/>
+      </javah>
+      <exec dir="${mx.native.dir}" executable="gcc">
+        <arg value="xdev_mxdev_MXSendRequest.c"/>
+        <arg value="xdev_mxdev_MXRecvRequest.c"/>
+        <arg value="xdev_mxdev_MXDevice.c"/>
+        <arg value="-o"/>
+        <arg value="libmxdev.so"/>
+        <arg value="-shared"/>
+        <arg value="-I"/>
+        <arg value="."/>
+        <arg value="-I"/>
+        <arg value="${java_home}/include"/>
+        <arg value="-I"/>
+        <arg value="${java_home}/include/linux"/>
+        <arg value="-I"/>
+        <arg value="${mx_home}/include"/>
+        <arg value="-L"/>
+        <arg value="${mx_home}/lib"/>
+        <arg value="-fPIC"/>
+        <arg value="-lmyriexpress"/>
+      </exec>
+
+      <move file="${mx.native.dir}/libmxdev.so" todir="${lib.dir}"/> 
+      <!-- 
+      <delete>
+        <fileset dir="${mx.native.dir}" includes="*.h"/>
+      </delete>
+      -->
+    </target>
+
+    <target name="clean">  <!-- depends="cleanJava"> -->
+	<delete>
+	 <fileset dir="${mpi.dir}" includes="**/*.class"/>
+	 <fileset dir="${mpjdev.dir}" includes="**/*.class"/> 
+	 <fileset dir="${xdev.dir}" includes="**/*.class"/>
+	 <fileset dir="${mpjbuf.dir}" includes="**/*.class"/> 
+	 <fileset dir="src/runtime" includes="**/*.class"/>
+	 <fileset dir="src/runtime" includes="*.class"/>
+	</delete>
+    </target>
+
+    <target name="veryclean" depends="clean"/> <!-- ,cleanJava"/> -->
+
+    <!-- Processing SVG images to PNG (for documentation) -->
+
+    <target name="haveBatik">
+        <available property="batik.present"
+                   file="${batik.dir}/batik-rasterizer.jar"/>
+    </target>
+
+    <macrodef name="rasterize">
+
+        <attribute name="dir"/>
+        <attribute name="name"/>
+
+        <sequential>
+            <java jar="${batik.dir}/batik-rasterizer.jar"
+                  fork="true" failonerror="true">
+
+                <arg value="@{dir}/@{name}.svg"/>
+            </java>
+        </sequential>
+    </macrodef>
+
+    <target name="figures" depends="haveBatik" if="batik.present">
+        <rasterize dir="${doc.dir}/images" name="mpj-section"/>
+        <rasterize dir="${doc.dir}/images" name="mpj-static"/>
+    </target>
+
+    <target name="java-docs" depends="figures">
+      <javadoc
+        destdir="${doc.dir}/javadocs"
+	classpath="${lib.dir}/org.mortbay.jetty.jar:${lib.dir}/javax.servlet.jar:${lib.dir}/wrapper.jar:${lib.dir}/log4j-1.2.11.jar;${lib.dir}/commons-cli-1.2.jar">
+			<fileset dir="${mpi.dir}" defaultexcludes="yes">
+				<include name="**/Cartcomm.java"/>
+				<include name="**/CartParms.java"/>
+				<include name="**/Comm.java"/>
+				<include name="**/Datatype.java"/>
+				<include name="**/Errhandler.java"/>
+				<include name="**/Graphcomm.java"/>
+				<include name="**/GraphParms.java"/>
+				<include name="**/Group.java"/>
+				<include name="**/Intercomm.java"/>
+				<include name="**/Intracomm.java"/>
+				<include name="**/MPI.java"/>
+				<include name="**/MPIException.java"/>
+				<include name="**/Op.java"/>
+				<include name="**/Prequest.java"/>
+				<include name="**/Request.java"/>
+				<include name="**/ShiftParms.java"/>
+				<include name="**/Status.java"/>
+				<include name="**/User_function.java"/>
+			</fileset>
+		</javadoc>
+	</target>
+
+    <target name="all" depends="compile,jars,clean"
+            description="All"/>
+
+    <target name="hadoop" depends="compile-hadoop,jars,hadoop-jars,clean"
+            description="Hadoop YARN"/>
+
+</project>

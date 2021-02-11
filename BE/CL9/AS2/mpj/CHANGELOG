@@ -1,0 +1,389 @@
+Version 0.44
+------------
+
+1. This release mainly introduces the Hadoop YARN runtime for MPJ Express
+
+   a. For running MPJ programs on Hadoop clusters, refer to "yarnguide.pdf"
+      in $MPJ_HOME/doc folder
+
+   b. MPJYarnClient MPJAppMaster MPJYarnWrapper classes have been added
+      to starter package
+ 
+   c. Port allocation has been moved to niodev.init
+
+   d  Build.xml is changed:
+      "ant" command compiles the normal runtime
+      "ant hadoop" command compiles the MPJ Hadoop runtime
+
+Version 0.43
+------------
+
+1. This release mainly introduces optimized collective communication primitives
+   added in MPJ Express to improve pure Java collective communication performance.
+   Minimum Spanning Tree and Bucket or Cyclic Algorithms are used to implement 
+   optimized collectives. Following collective communication primitives are updated:
+   
+   a. Broadcast updated to Minimum Spanning Tree implementation.
+   
+   b. Gather updated to Minimum Spanning Tree implementation for Small Data Size
+      0 - 16 KB and Flat Tree (old) implementation for Large Data Size > 16 KB.
+   
+   c. Scatter updated to Minimum Spanning Tree implementation for Small Data Size
+      0 - 16 KB and Flat Tree (old) implementation for Large Data Size > 16 KB.
+   
+   d. Allgather updated to Bucket Algorithm implementation.
+   
+   e. Reduce updated to Minimum Spanning Tree implementation.
+   
+   f. Allreduce updated to MST_Reduce + MST_Bcast implementation.
+   
+   g. Reduce_scatter updated to Bucket Algorithm implementation.
+	    
+2. In this release $MPJ_HOME/conf/wrapper.conf is modified to $MPJ_HOME/conf/mpjexpress.conf
+   Following are other modifications done in this file.
+   
+   a. Unused configurations are removed.
+   
+   b. Logfile parameter for logging of core libraries is added.
+   
+   c. MPJ Express version number is added.
+   
+   c. Switch for selection of old collectives is also added.
+   
+   d. MPJ Express ports and logging parameters are modified.
+ 
+ 3. Some minor bugs fixed.
+ 
+Version 0.42
+------------
+
+1. This release mainly introduces updated runtime system for MPJ Express to 
+   support parallel job execution by multiple users. Following are major changes
+   to support parallel job execution in MPJ Express.
+   a. Addition of multi-threaded Job launcher in MPJ Daemon. Whenever a 
+      process request posted to MPJ Daemon it launches a new thread to execute it.
+   
+   b. Java NIO Sockets are replaced with Java I/O Sockets in both MPJ Daemon 
+       and MPJRun code.
+   
+   c. Separate channels are introduced for I/O messages delivery to each job
+      executer.
+	  
+   d. Optimized mechanism for port allocation to processes for inter-process 
+      communication while distributing job on cluster. Read/Write ports are 
+      now assigned dynamically.
+   
+   e. Dynamically allocated ports are now written in mpjdev.conf file and 
+      NIODevice reads both ports from mpjdev.conf
+    
+   f. XML based process ticket has been introduced to send processes information
+      between MPJRun and MPJDaemon.
+	    
+2. This release also introduces support for using MPJ Express on non-shared 
+   file system.
+
+3. In this release dependency of "Java Service Wrapper Project" has been removed 
+   and a new mechanism to launch daemons has been introduced. To support this new
+   mechanism some useful scripts has also been added in MPJ Express.
+   * mpjboot <machines_files>: To start MPJ daemons
+   * mpjhalt <machines_files>: To stop MPJ daemons
+   * mpjstatus <machines_files>: To check current status of MPJ daemons
+   * mpjinfo <machines_files>: To get information about Java process
+   * mpjclean <machines_files>: To kill MPJ daemons
+   * mpjdaemon.sh <query> <hostnames>: To perform operations on MPJ daemons manually
+                                      like boot, halt, status
+   * mpjdaemon.bat <query>: Windows version of mpjdaemon.
+
+4. Changes in individual files and addition of new file:
+    (+ indicates addition of a new file or directory)
+    $MPJ_HOME/
+		build.xml - Added support for compiling $MPJ_HOME/src/common and daemonmanager
+		README-win.txt
+		README
+		CHANGELOG - This file
+        LICENSE.txt - License for Java Service Wrapper Project removed
+        THIRDPARTYLICENSES - modified to add Apache License
+        +THIRDPARTYNOTICES - Apache License Notice for each Apache project used
+    $MPJ_HOME/bin/
+        mpjboot.sh - modified to start daemons using new mechanism. Dependency of
+		             Java Service Wrapper Project removed
+        mpjhalt.sh - modified to stop daemons using new mechanism. 
+        mpjdaemon.bat - modified to handle daemon operations on Windows OS
+        +mpjstatus.sh
+        +mpjclean.sh
+        +mpjinfo.sh
+        +mpjdaemon.sh
+        -wrapper.exe
+        -daemon_linux_ppc_64
+        -daemon_linux_x86_32
+        -daemon_linux_x86_64
+        -daemon_macosx
+        -daemon_macosx_ppc_32
+        -daemon_solaris_sparc_32
+        -daemon_solaris_sparc_64
+        -mpjdaemon_linux_ppc_64
+        -mpjdaemon_linux_x86_32
+        -mpjdaemon_linux_x86_64
+        -mpjdaemon_macosx
+        -mpjdaemon_macosx_ppc_32
+        -mpjdaemon_solaris_sparc_32
+        -mpjdaemon_solaris_sparc_64
+        -starter.sh
+        -starter.bat
+        -installmpjd-windows.bat
+        -uninstallmpjd-windows.bat
+        
+    $MPJ_HOME/conf/
+        wrapper.conf - modified to add Logfile parameters for MPJRun and MPJDaemon.
+		               App parameter for PortManager also added
+	 
+    $MPJ_HOME/lib/
+        +commons-cli-1.2.jar
+        +commons-codec-1.8.jar
+        +commons-io-2.4.jar
+        
+    $MPJ_HOME/doc/
+        linuxguide.pdf
+        windowsguide.pdf
+		
+    $MPJ_HOME/src/runtime/
+        +common  (new directory)
+		    +IOHelper.java
+            +MPJProcessTicket.java
+            +MPJUtil.java
+            +MPJXml.java
+            +RTConstants.java
+            MPJRuntimeException.java - moved from /runtime/ Package to /common/
+             
+        +daemonmanager (new directory)
+            +BootThread.java
+            +CleanUpThread.java
+            +CLOptions.java
+            +DaemonUtil.java
+            +DMConstants.java
+            +DMMessages.java
+            +DMThread.java
+            +DMThreadUtil.java
+            +HaltThread.java
+            +MPJBoot.java
+            +MPJCleanup.java
+            +MPJDaemonManager.java
+            +MPJHalt.java
+            +MPJProcessInfo.java
+            +MPJStatus.java
+            +ProcessInfoThread.java
+            +StatusThread.java
+            +WinBoot.java
+            +WinHalt.java
+            
+        /daemon
+            MPJDaemon.java - modified to work with new runtime system
+            +ConnectionManager
+            +OutputHandler
+            +PortManager
+            +PortManagerThread
+            +PortRequesterThread
+            +ProcessArgumentsManager
+            +ProcessLauncher
+            -HybridDaemon.java
+            -WrapperSimpleApp.java
+            -MPJProcessStream.java
+        
+        /starter
+            MPJRun.java - modified to work with new runtime system
+            +IOMessageThread.java
+            -PortScan.java
+            
+
+Version 0.41
+------------
+
+1. This release mainly introduces support for using a Native MPI Implementation 
+   from MPJ Express. We call this native device. 
+
+2. This release also introduces support for MPJ Express Profiler. The Profiler
+   generates profiles and traces of MPJ Express applications. Currently the
+   Profiler does not support native device.
+
+3. Major changes: $MPJ_HOME/src/mpjdev is now abstract and provides two implementations
+	 i) javampjdev and ii) natmpjdev. Intracomm is now a wrapper class that either
+	 uses PureIntracomm (for pure Java devices) or NativeIntracomm (for native decive).
+
+4. libnatmpjdev.so is a C JNI wrapper library to call native MPI library.
+   The source code is placed in $MPJ_HOME/src/mpjdev/natmpjdev/lib
+
+5. Some bug fixes in runtime.
+
+6. Changes in individual files and addition of new file:
+	 (+ indicates addition of a new file or directory)
+	 $MPJ_HOME/
+		build.xml - Added support for compiling $MPJ_HOME/src/mpjdev/natmpjdev and javampjdev
+		README-win.txt
+		README
+		CHANGELOG - This file
+	 $MPJ_HOME/test/
+		+nativetest (new directory)
+			+compile.sh
+			+runtest.sh
+			+compile.bat
+			+runtest.bat
+		mpi - Added main() method in testcases
+		mpjdev - Added main() method in Buffer testcases
+	 $MPJ_HOME/bin/
+		mpjrun.sh - modified to detect -dev native, if found then calls
+   			    mpirun instead of invoking $MPJ_HOME/lib/starter.jar
+	 $MPJ_HOME/doc/
+		linuxguide.pdf
+		windowsguide.pdf
+		RunningandDebuggingMPJExpressWithEclipse.pdf (Renamed)
+		+MPJExpressProfilerUserGuide.pdf
+		
+	 $MPJ_HOME/src/runtime/
+		 /starter/MPJRun.java (version 0.41)
+	 $MPJ_HOME/mpjbuf/
+		NIOBuffer.java.in - Now using allocateDirect()
+		Buffer.java.in - Added a new method public int getCapacity()
+				 used in mpjdev.natmpjdev.Comm.recv() as count  
+	 $MPJ_HOME/mpi/
+		MPI
+		Comm
+		Intracomm
+		+IntracommImpl
+		+NativeIntracomm
+		+PureIntracomm
+		Datatype
+		Group
+		Request
+		Intercomm
+		Op - a new field opCode is introduced. This helps distinguish MPJ Express
+				 Operators from Native MPI_Operators
+		Max - Initializing this.opCode = mpjdev.Constants.MAX_CODE
+		Min - Initializing this.opCode = mpjdev.Constants.MIN_CODE
+		Sum - Initializing this.opCode = mpjdev.Constants.SUM_CODE
+		Prod - Initializing this.opCode = mpjdev.Constants.PROD_CODE
+		Land - Initializing this.opCode = mpjdev.Constants.LAND_CODE
+		Band - Initializing this.opCode = mpjdev.Constants.BAND_CODE
+		Lor - Initializing this.opCode = mpjdev.Constants.LOR_CODE
+		Bor - Initializing this.opCode = mpjdev.Constants.BOR_CODE
+		Lxor - Initializing this.opCode = mpjdev.Constants.LXOR_CODE
+		Bxor - Initializing this.opCode = mpjdev.Constants.BXOR_CODE
+
+	 $MPJ_HOME/mpjdev/
+		Comm - Abstracted
+		+Constants - Contains Macros and Flags
+		Group - Abstracted
+		MPJDev - Abstracted
+		MPJDevException - Provided a comments section telling that currently it throws
+			       	  xdevEception so need to think about it for natmpjdev since
+				  natmpjdev doesn't implement xdev.
+		Request - Modified to check if native device then donot call dev.peek() method
+		Status - source is now initialized as -1 to support native device completion handler, 
+			 if its set (which means > -1) then the operation is complete
+
+		+javampjdev/
+			+Comm - For Pure Java
+			+Group - For Pure Java
+			+MPJDev - For Pure Java
+		+natmpjdev/
+			+Comm - For native device
+			+Group - For native device
+			+Intercomm - For native device
+			+Intracomm - For native device
+			+MPJDev - For native device
+			+NativeRequest - For native device
+			+NativeRecvRequest - For native device
+			+NativeSendRequest - For native device
+				
+			+lib/
+				+CMakeLists.txt - For CMake
+				+mpjdev_natmpjdev_Comm.c
+				+mpjdev_natmpjdev_Comm.h
+				+mpjdev_natmpjdev_Group.c
+				+mpjdev_natmpjdev_Group.h
+				+mpjdev_natmpjdev_Intercomm.c
+				+mpjdev_natmpjdev_Intercomm.h
+				+mpjdev_natmpjdev_Intracomm.c
+				+mpjdev_natmpjdev_Intracomm.h
+				+mpjdev_natmpjdev_NativeRecvRequest.c
+				+mpjdev_natmpjdev_NativeRecvRequest.h
+				+mpjdev_natmpjdev_NativeSendRequest.c
+				+mpjdev_natmpjdev_NativeSendRequest.h
+				+mpjdev_natmpjdev_shared.h
+
+Version 0.40
+------------
+
+1. This release mainly introduces support for MPJ Express Debugger in MPJ
+   Express Project. MPJ Express Debugger is an Eclipse based plugin.
+
+2. MPJ Express Debugger support added in MPJ Express Runtime. WriteFile
+   method is added in MPJRun.java to write configuration file in user 
+   directory for working of MPJ Express Debugger.
+
+Version 0.39
+------------
+
+1. This release mainly introduces a new MPJ Express device 'hybdev' that 
+   supports hybrid parallelism on cluster of multicore machines. The device, 
+   hybdev, transparently achieves hybrid parallelism. It does not require 
+   code rewriting effort for new and existing MPJ Express applications. It 
+   is developed by Ansar Javed and Mohsan Jameel.
+  
+2. In xdev.Device.java an overloaded abstract method 'iprove' is added
+   public abstract mpjdev.Status iprobe (ProcessID srcID, ProcessID dstID, 
+   int tag, int context);
+   It is used by hybdev to probe messages in network device.
+
+3. In xdev.Device interface an abstract method 'iprobeAndFetch' is added
+   public abstract mpjdev.Status iprobeAndFetch (ProcessID srcID, 
+   ProcessID dstID, int tag, int context, mpjbuf.Buffer buf);
+   It is required for Hybrid device to provide support for wildcard messages.
+  
+4. ProcTree.java is added in xdev/niodev package, previously it was imported 
+   from MPI layer.
+
+5. Add and remove methods of ArrQueue and RecvQueue in niodev are updated. 
+   The message addition and removal process in the queues is based on the 
+   message key 
+   Now key consists of Source, Destination, tag, context.
+
+6. Hybrid device support is added in runtime classes i.e. MPJDaemon and MPJRun. 
+   Two new Java classes are added in runtime as well.
+   a. HybridDaemon
+   b. HybridStarter
+
+Version 0.38
+------------
+
+1. Fixed a bug in the mpjrun module that appends null as the host name 
+   in the configuration file. Thanks to Pete Christopher for 
+   identifying this bug. 14/1/2011
+
+Version 0.37
+------------
+
+1. Added the executing and debugging tutorial of MPJ Express applications
+   using Eclipse IDE. 14/5/2010
+2. Modified the runtime to get rid of the shared directory requirement 
+   between the starter (head node) and daemons (running on compute nodes).
+   This paper is coded by Rizwan Hanif and Amjad Aziz. 6/1/2011
+3. Fixed a bug that causes daemons to crash on Windows boxes. 4/1/2011
+
+Version 0.36
+------------
+
+1. Fixed the mpjboot error for Mac OS X reported by Ed Baskerville. The
+   mpjboot script used x86 binaries on Mac OS X, which obviously was incorrect.
+   18/3/2010
+2. The MPJ Express runtime could not start more than 100 processes. 
+   Guillermo Lopez Taboada identified and proposed and a fix for this.  
+   18/3/2010
+3. Fixed the bug which broke test cases when executed with odd number of
+   processes. Many thanks to Guillermo Lopez Taboada for discovering 
+   this bug. 18/3/2010 
+4. Made changes to the MPJ Express runtime system and got rid of a couple 
+   of internal classes. 
+5. On some clusters, users complained that MPJ Express took abnormally 
+   long amount of time to bootstrap. We have fixed this bug in this release.
+   1/4/2010
+6. Got rid of the Jetty dependency. 9/4/2010

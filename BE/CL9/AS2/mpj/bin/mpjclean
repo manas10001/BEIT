@@ -1,0 +1,9 @@
+#!/bin/sh
+
+if [ $# -ne 1 ]; then
+  echo "Usage: mpjclean <machines_file>";
+  exit 127
+fi 
+
+
+java -jar $MPJ_HOME/lib/daemonmanager.jar -clean -m "$@"

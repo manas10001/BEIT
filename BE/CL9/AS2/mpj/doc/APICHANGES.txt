@@ -1,0 +1,55 @@
+Scope
+-----
+This document lists methods whose API has been changed from mpiJava-1.2.5. It 
+could be important if you want to port your Java MPI applications from mpiJava
+to MPJExpress.
+
+Please also read 'Known problems & limitations' to make sure that MPJExpress provides 
+the feature your application is relying on.
+
+List of methods with their API's changed
+----------------------------------------
+
+1. MPI.Buffer_attach( ... )
+mpiJava: static public void Buffer_attach(byte[] buffer) 
+                                          throws MPIException
+MPJExpress: public static void Buffer_attach(ByteBuffer userBuffer) 
+                                      throws MPIException
+
+2. MPI.Buffer_detach( ... )
+mpiJava: static public byte[] Buffer_detach() throws MPIException
+MPJExpress: public static void Buffer_detach() throws MPIException 
+
+3. Comm.Pack( ... ) [ note the penultimate argument ]
+mpiJava:
+  public int Pack(Object   inbuf,
+                  int      offset,
+                  int      incount,
+                  Datatype datatype,
+                  byte[]   outbuf,
+                  int      position) throws MPIException 
+MPJExpress:
+  public int Pack(Object inbuf, 
+  		  int offset, 
+		  int incount, 
+		  Datatype datatype,
+                  mpjbuf.Buffer outbuf, 
+		  int position) throws MPIException 
+
+4. Comm.Unpack( ... ) [ note the penultimate argument ]
+mpiJava:
+  public int Unpack(byte[] inbuf, 
+                    int position, 
+		    Object outbuf,
+		    int offset, 
+		    int outcount, 
+		    Datatype datatype) throws MPIException 
+
+MPJExpress:
+  public int Unpack(mpjbuf.Buffer inbuf, 
+                    int position, 
+		    Object outbuf,
+		    int offset, 
+		    int outcount, 
+		    Datatype datatype) throws MPIException 
+					     

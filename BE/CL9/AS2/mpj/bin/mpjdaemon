@@ -1,0 +1,46 @@
+#!/bin/sh
+
+if [ $# -eq 0 ];
+	then
+		echo "Usage: mpjdaemon <query> <hostnames>";
+		echo "query=<-boot>:      Start MPJ Express daemons";
+		echo "query=<-halt>:      Stop MPJ Express daemons";
+		echo "query=<-status>:    Display status of MPJ Express daemons";
+		echo "query=<-info>:      Display all Java process";
+		echo "query=<-clean>:     Clean all Java process";
+		echo "hostname:           Default Localhost";
+		echo "";   
+		echo "example: mpjdaemon -boot host1 host2";
+		echo "";
+		exit 127
+else
+    if [ $1 != "-boot" ] && [ $1 != "-halt" ] && [ $1 != "-status" ] && [ $1 != "-clean" ] && [ $1 != "-info" ] ; 
+		then
+			echo "Usage: mpjdaemon <query> <hostnames>";
+			echo "query=<-boot>:      Start MPJ Express daemons";
+			echo "query=<-halt>:      Stop MPJ Express daemons";
+			echo "query=<-status>:    Display status of MPJ Express daemons";
+			echo "query=<-info>:      Display all Java process";
+			echo "query=<-clean>:     Clean all Java process";
+			echo "hostname:           Default Localhost";
+			echo "";   
+			echo "example: mpjdaemon -boot host1 host2";
+			echo ""; 
+			exit 127
+
+	else
+		query="$1"
+		shift;
+	fi
+fi
+
+if [ $# -eq 0 ];
+	then
+		hostnames='localhost'
+else
+    hostnames="$@"
+fi
+
+
+java -jar $MPJ_HOME/lib/daemonmanager.jar $query -hosts $hostnames
+    
