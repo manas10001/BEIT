@@ -7,7 +7,7 @@ public class Mpi_Basic{
 		int rank = MPI.COMM_WORLD.Rank();
 
 
-		System.out.println("Rank of process" + rank);
+		System.out.println("Process: " + rank);
 
 		MPI.Finalize();
 	}
