@@ -20,7 +20,7 @@ function liveValidateStr(arg){
 function lengthValidate(arg, length){
     var dat = document.getElementById(arg).value;
     
-    if(dat.length != length)
+    if(dat.length < length)
         document.getElementById(arg).style.border = "1px solid red";
     else
         document.getElementById(arg).style.border = "1px solid green";
@@ -34,4 +34,36 @@ function validateEmail(arg){
 			document.getElementById(arg).style.border = "1px solid green";
 		else
 			document.getElementById(arg).style.border = "1px solid red";
+}
+
+function validateLoginForm(){
+    var username = document.getElementById("login").value;
+    var password = document.getElementById("password").value;
+
+    if(username.length == 0 || password.length == 0){
+        alert("All fields are required!");
+        liveValidateBlank("login");
+        liveValidateBlank("password");
+    }
+}
+
+function validateRegisterForm(){
+    var username = document.getElementById("login").value;
+    var email = document.getElementById("mail").value;
+    var password = document.getElementById("password").value;
+    var repassword = document.getElementById("repassword").value;
+
+    if(username.length == 0 || password.length == 0 || email.length == 0 || repassword.length == 0){
+        alert("All fields are required!");
+        liveValidateBlank("login");
+        liveValidateBlank("password");
+        liveValidateBlank("mail");
+        liveValidateBlank("repassword");
+    }else{
+        if(password != repassword){
+            alert("password and retyped passwords dont match");
+            document.getElementById("password").style.border = "1px solid red";
+            document.getElementById("repassword").style.border = "1px solid red";
+        }
+    }
 }
