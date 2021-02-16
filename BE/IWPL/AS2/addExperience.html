@@ -11,38 +11,63 @@
                 <a href="./interview_tips.html" class="navitem">Interview Tips</a>
                 <a href="./categories.html" class="navitem">Categories</a>
                 <a href="./profiles.html" class="navitem">Profiles</a>
-                <a href="./login.html" class="navitem active">Login/Register</a>
+                <a href="./login.html" class="navitem">Login/Register</a>
+                <a href="./addExperience.html" class="navitem active">Add Experience</a>
             </ul>    
         </div>
         <div class="content">
             <div class="card card-md">
                 <div class="card-body">
                     <div class="card-title">
-                        <strong>Register</strong>
+                        <strong>Add your Interview Experience</strong>
                     </div>
                     <div class="forms">
-                        <form action="register.html">
-                            <fieldset id="fs1">
-                                <legend>Account Details</legend>
-                            <label>Uesrname:*</label><br>
-                            <input type="text" id="login" name="login" autocomplete="off" onkeyup="liveValidateBlank('login'); liveValidateStr('login');" placeholder="Username">
+                        <form id = "addExperienceForm">
+                            <label class="labels">Job Title:*</label><br>
+                            <input class="inputs" type="text" id="jobTitle" name="jobTitle" onkeyup="liveValidateBlank('jobTitle'); liveValidateStr('jobTitle');" placeholder="Job Title">
                                 
-                            <label>Email ID:*</label><br>
-                            <input type="email" id="mail" name="mail" onkeyup="liveValidateBlank('mail')" placeholder="abc@h1.com">
+                            <label class="labels">Category:*</label><br>
+                            <select class="inputs" name="category" id="category" onchange="validateSelect('category');">
+                                <option value="select">Select Option</option>
+                                <option value="job">Job</option>
+                                <option value="internship">Internship</option>
+                                <option value="parttime">Part Time</option>
+                            </select>
 
-                            <label>Password:*</label><br>
-                            <input type="password" id="password" name="pass" onkeyup="liveValidateBlank('password'); lengthValidate('password',8);" placeholder="Password">
+                            <label class="labels">Profile:*</label><br>
+                            <select class="inputs" name="profile" id="profile" onchange="validateSelect('profile');">
+                                <option value="select">Select Option</option>
+                                <option value="cs">Computer Science</option>
+                                <option value="finance">Finance</option>
+                                <option value="marketing">Marketing</option>
+                            </select>
+
+                            <label class="labels">Company:*</label><br>
+                            <input class="inputs" type="text" id="company" name="company" onkeyup="liveValidateBlank('company'); liveValidateStr('company');" placeholder="Company Name">
                             
-                            <label>Retype Password:*</label><br>
-                            <input type="password" id="repassword" name="repass" onkeyup="liveValidateBlank('repassword'); lengthValidate('repassword',8)" placeholder="Retype Password">
-                            
-                             </fieldset>
+                            <label class="labels">Result:*</label><br> 
+                            <br><input type="radio" id="Selected" name="result" value="Selected"/>
+                            <label for="Selected">Selected</label>
+                            <input type="radio" id="Rejected" name="result" value="Rejected">
+                            <label for="Rejected">Rejected</label><br>
+
+                            <label class="labels">Application Process:*</label><br>
+                            <textarea name="application" id="application" rows="5" cols="10" class="inputs" placeholder="Application Process" onchange="liveValidateBlank('application');"></textarea>
+
+                            <label class="labels">Technical Rounds:*</label><br>
+                            <textarea name="technical" id="technical" rows="5" cols="10" class="inputs" placeholder="Technical Rounds" onchange="liveValidateBlank('technical');"></textarea>
+
+                            <label class="labels">HR Rounds:*</label><br>
+                            <textarea name="hr" id="hr" rows="5" cols="10" class="inputs" placeholder="HR Rounds" onchange="liveValidateBlank('hr');"></textarea>
+
+                            <label class="labels">Preperation Tips:*</label><br>
+                            <textarea name="tips" id="tips" rows="5" cols="10" class="inputs" placeholder="Preperation Tips" onchange="liveValidateBlank('tips');"></textarea>
                          <br><br>
-                         <input type="submit" class="logbtn"  value="Register">
+                         <button class="logbtn"  onclick="return validateAddExp();">Add</button>
                        </form>
                     </div>
                 </div>
-                <a class="link" href="./login.html">Already Registered? Login!</a>
+                
             </div>
         </div>
         <script type="text/javascript" src="./validator.js"></script>

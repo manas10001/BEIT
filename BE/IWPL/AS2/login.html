@@ -12,6 +12,7 @@
                 <a href="./categories.html" class="navitem">Categories</a>
                 <a href="./profiles.html" class="navitem">Profiles</a>
                 <a href="./login.html" class="navitem active">Login/Register</a>
+                <a href="./addExperience.html" class="navitem">Add Experience</a>
             </ul>    
         </div>
         <div class="content">
@@ -24,11 +25,11 @@
                         <form>
                             <fieldset id="fs1">
                                 <legend>Account Details</legend>
-                                <label>Login ID:*</label><br>
-                                <input type="text" id="login" name="login" onkeyup="liveValidateBlank('login'); liveValidateStr('login');" placeholder="Login-ID">
+                                <label class="labels">Login ID:*</label><br>
+                                <input class="inputs" type="text" id="login" name="login" onkeyup="liveValidateBlank('login'); liveValidateStr('login');" placeholder="Login-ID">
                                 
-                                <label>Password:*</label><br>
-                                <input type="password" id="password" name="pass" onkeyup="liveValidateBlank('password'); lengthValidate('password',8);" placeholder="Password">
+                                <label class="labels">Password:*</label><br>
+                                <input class="inputs" type="password" id="password" name="pass" onkeyup="liveValidateBlank('password'); lengthValidate('password',8);" placeholder="Password">
 
                             </fieldset>
                          <br><br>

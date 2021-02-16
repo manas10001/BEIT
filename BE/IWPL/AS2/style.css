@@ -100,7 +100,8 @@ li{
     font-size: 15px;
     text-align: center;
 }
-input{
+
+.inputs{
     border-radius: 10px;
     color: black;
     padding: 20px 10px;
@@ -111,7 +112,7 @@ input{
     margin-top: 10px;
     margin-bottom: 20px;
 }
-input:hover{
+.inputs{
     display: inline-block;
     box-shadow: 0 0 2px rgba(0,0,0,0.6);
 }
@@ -130,7 +131,7 @@ input:hover{
     background: #2AA600;
     color: rgb(255, 255, 255);
 }
-label{
+.labels{
     padding-left:5px;
     float: left;
 }
@@ -138,7 +139,7 @@ legend,fieldset{
     border-radius: 10px;
     padding: 10px;
 }
-input:focus{
+.inputs{
     outline: none;
 }
 /* login/register */

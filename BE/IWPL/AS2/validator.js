@@ -1,10 +1,13 @@
 //live validate for blank input
 function liveValidateBlank(arg){
     var data = document.getElementById(arg).value;
-    if(data.length==0)
+    if(data.length==0){
         document.getElementById(arg).style.border = "1px solid red";
-    else
+        return false;
+    }else{
         document.getElementById(arg).style.border = "1px solid green";
+        return true;
+    }
 }
 //live validation for strings
 function liveValidateStr(arg){
@@ -37,10 +40,8 @@ function validateEmail(arg){
 }
 
 function validateLoginForm(){
-    var username = document.getElementById("login").value;
-    var password = document.getElementById("password").value;
 
-    if(username.length == 0 || password.length == 0){
+    if(!liveValidateBlank("login") || !liveValidateBlank("password")){
         alert("All fields are required!");
         liveValidateBlank("login");
         liveValidateBlank("password");
@@ -51,12 +52,8 @@ function validateLoginForm(){
 }
 
 function validateRegisterForm(){
-    var username = document.getElementById("login").value;
-    var email = document.getElementById("mail").value;
-    var password = document.getElementById("password").value;
-    var repassword = document.getElementById("repassword").value;
 
-    if(username.length == 0 || password.length == 0 || email.length == 0 || repassword.length == 0){
+    if(!liveValidateBlank("login") || !liveValidateBlank("password") || !liveValidateBlank("mail") || !liveValidateBlank("repassword")){
         alert("All fields are required!");
         liveValidateBlank("login");
         liveValidateBlank("password");
@@ -72,4 +69,30 @@ function validateRegisterForm(){
         }
     }
     alert("Sucess!");
+    return true;
+}
+
+function validateSelect(arg){
+    var dat = document.getElementById(arg).value;
+    if(dat!="select")
+        document.getElementById(arg).style.border = "1px solid green";
+    else
+        document.getElementById(arg).style.border = "1px solid red";
+}
+
+function validateAddExp(){
+    //entire form validation
+
+    if(!liveValidateBlank("jobTitle") || !liveValidateBlank("company") || !liveValidateBlank("application") || !liveValidateBlank("technical") || !liveValidateBlank("hr") || !liveValidateBlank("tips") ){
+        liveValidateBlank("jobTitle");
+        liveValidateBlank("company");
+        liveValidateBlank("application");
+        liveValidateBlank("technical");
+        liveValidateBlank("hr");
+        liveValidateBlank("tips");
+        alert("All fields are required!");
+        return false;
+    }
+    alert("Sucess!");
+    return true;
 }
