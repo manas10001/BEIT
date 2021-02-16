@@ -44,6 +44,9 @@ function validateLoginForm(){
         alert("All fields are required!");
         liveValidateBlank("login");
         liveValidateBlank("password");
+        return false;
+    }else{
+        alert("Login success!")
     }
 }
 
@@ -59,11 +62,14 @@ function validateRegisterForm(){
         liveValidateBlank("password");
         liveValidateBlank("mail");
         liveValidateBlank("repassword");
+        return false;
     }else{
         if(password != repassword){
             alert("password and retyped passwords dont match");
             document.getElementById("password").style.border = "1px solid red";
             document.getElementById("repassword").style.border = "1px solid red";
+            return false;
         }
     }
+    alert("Sucess!");
 }
