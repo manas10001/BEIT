@@ -14,8 +14,21 @@ import android.widget.Toast;
 
 public class Home extends AppCompatActivity {
 
-    private Button leave;
+    SessionManager sessionManager;
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_home);
+
+        sessionManager = new SessionManager(this);
+        //redirect user if logged out
+        if(sessionManager.getSesion().equals("noUser")){
+            Intent intent = new Intent(Home.this, MainActivity.class);
+            startActivity(intent);
+        }
+
+    }
 
     //handle selection of menu items
     @Override
@@ -33,6 +46,8 @@ public class Home extends AppCompatActivity {
             //Logout
             case R.id.logout:
                 try {
+                    sessionManager = new SessionManager(Home.this);
+                    sessionManager.removeSession();
                     Intent intent = new Intent(Home.this, MainActivity.class);
                     startActivity(intent);
                 }catch(Exception e){
@@ -50,11 +65,5 @@ public class Home extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.home_menu, menu);
         return true;
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
     }
 }

@@ -17,17 +17,32 @@ public class MainActivity extends AppCompatActivity {
     private EditText passwd;
     private String mail;
     private String pass;
+    DBManager db;
+    SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //init session manager
+        sessionManager = new SessionManager(this);
+
+        //if a session exists redirect user to home
+        if (!sessionManager.getSesion().equals("noUser")) {
+            Intent intent = new Intent(MainActivity.this, Home.class);
+            startActivity(intent);
+        }
+
         //get resources
         goto_register = findViewById(R.id.register);
         loginbtn = findViewById(R.id.change);
         email = findViewById(R.id.email);
         passwd = findViewById(R.id.password);
+
+        //init dbmanager
+        db = new DBManager(this);
+
 
         goto_register.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,8 +63,8 @@ public class MainActivity extends AppCompatActivity {
                     mail = email.getText().toString();
                     pass = passwd.getText().toString();
 
-//                    if(mail.equals("a@g.co") && pass.equals("123")){
-                    if(true){
+                    if(db.verifyLogin(mail,pass)){
+                        sessionManager.createSession(mail);
                         Intent intent = new Intent(MainActivity.this, Home.class);
                         startActivity(intent);
                     }else{

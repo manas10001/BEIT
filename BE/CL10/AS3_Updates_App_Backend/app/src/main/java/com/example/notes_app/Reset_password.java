@@ -12,6 +12,9 @@ import android.widget.Toast;
 public class Reset_password extends AppCompatActivity {
     EditText oldPassword, newPassword, reNewPassword;
     Button change, cancel;
+    String password, email, repass;
+    SessionManager sessionManager;
+    DBManager db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,12 +28,33 @@ public class Reset_password extends AppCompatActivity {
         change = findViewById(R.id.change);
         cancel = findViewById(R.id.cancel);
 
+        sessionManager  = new SessionManager(this);
+        db = new DBManager(this);
+
         //change pass
         change.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 try {
-                    Toast.makeText(Reset_password.this,"Password Updated!", Toast.LENGTH_LONG).show();
+                    email = sessionManager.getSesion();
+
+                    //verify old password
+                    if(db.verifyLogin(email, oldPassword.getText().toString())){
+                        repass = reNewPassword.getText().toString();
+                        password = newPassword.getText().toString();
+
+                        //match retyped pass
+                        if(password.equals(repass)){
+                            //change password
+                            db.updatePassword(email, password);
+                            Toast.makeText(Reset_password.this,"Password Updated!", Toast.LENGTH_SHORT).show();
+
+                        }else{
+                            Toast.makeText(Reset_password.this,"New and retyped new password don't match!", Toast.LENGTH_SHORT).show();
+                        }
+                    }else{
+                        Toast.makeText(Reset_password.this,"Invalid old password!", Toast.LENGTH_SHORT).show();
+                    }
                 }catch(Exception e){
                     Toast.makeText(Reset_password.this,e.toString(), Toast.LENGTH_LONG).show();
                 }
