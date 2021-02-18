@@ -24,7 +24,7 @@
             android:layout_height="match_parent">
 
             <Button
-                android:id="@+id/change"
+                android:id="@+id/delAcc"
                 android:layout_width="100dp"
                 android:layout_height="50dp"
                 android:layout_marginBottom="17dp"

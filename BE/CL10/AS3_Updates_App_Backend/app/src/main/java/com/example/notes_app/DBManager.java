@@ -50,6 +50,7 @@ public class DBManager extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put("email",email);
         contentValues.put("password", password);
+
         long res = db.insert(TABLE, null, contentValues);
 
         if(res == -1)

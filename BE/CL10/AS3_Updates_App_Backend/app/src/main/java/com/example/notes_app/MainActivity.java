@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
         //get resources
         goto_register = findViewById(R.id.register);
-        loginbtn = findViewById(R.id.change);
+        loginbtn = findViewById(R.id.delAcc);
         email = findViewById(R.id.email);
         passwd = findViewById(R.id.password);
 

@@ -7,4 +7,8 @@
     <item android:id="@+id/logout"
         android:title="Logout"
         app:showAsAction="never"/>
+
+    <item android:id="@+id/deleteUser"
+        android:title="Delete User"
+        app:showAsAction="never"/>
 </menu>

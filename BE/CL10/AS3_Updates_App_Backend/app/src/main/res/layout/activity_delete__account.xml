@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#fff"
-    tools:context=".Register">
+    tools:context=".Delete_Account">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
@@ -21,69 +21,53 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="350dp">
 
             <Button
-                android:id="@+id/register"
-                android:layout_width="100dp"
+                android:id="@+id/delAcc"
+                android:layout_width="150dp"
                 android:layout_height="50dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="32dp"
                 android:background="@drawable/round_corner"
-                android:text="Register"
-                android:textColor="#ffffff"
+                android:text="Delete Account"
+                android:textColor="#000"
+                android:backgroundTint="#D32C00"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/repassword">
+                app:layout_constraintTop_toBottomOf="@+id/rePassword">
 
             </Button>
 
             <EditText
-                android:id="@+id/email"
-                android:layout_width="300dp"
+                android:id="@+id/password"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
-                android:layout_marginBottom="40dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="80dp"
+                android:layout_marginEnd="40dp"
+                android:drawableStart="@drawable/ic_key"
                 android:ems="10"
-                android:hint="  Email"
-                android:drawableStart="@drawable/ic_mail"
-                android:inputType="textEmailAddress"
-                app:layout_constraintBottom_toTopOf="@+id/password"
+                android:hint="  Password"
+                android:inputType="textPassword"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
-                android:id="@+id/password"
-                android:layout_width="300dp"
+                android:id="@+id/rePassword"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="30dp"
-                android:ems="10"
-                android:hint="  Password"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="28dp"
+                android:layout_marginEnd="40dp"
                 android:drawableStart="@drawable/ic_key"
-                android:inputType="textPassword"
-                app:layout_constraintBottom_toTopOf="@+id/repassword"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/email" />
-
-            <EditText
-                android:id="@+id/repassword"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="30dp"
                 android:ems="10"
-                android:hint="  Retype Password"
-                android:drawableStart="@drawable/ic_key"
+                android:hint="  Confirm Password"
                 android:inputType="textPassword"
-                app:layout_constraintBottom_toTopOf="@+id/register"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/password" />
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
@@ -95,23 +79,24 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="62dp"
         android:layout_marginBottom="59dp"
-        android:text="@string/reg_here"
+        android:text="Delete your Account:"
         android:textColor="#272626"
         android:textSize="26dp"
         app:layout_constraintBottom_toTopOf="@+id/cardView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/delAcc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:text="@string/alread_hav_acc"
-        android:textColor="#171717"
-        android:textSize="24sp"
+    <Button
+        android:id="@+id/cancel"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="31dp"
+        android:background="@drawable/round_corner"
+        android:text="Cancel"
+        android:textColor="#000"
+        android:backgroundTint="#00E676"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

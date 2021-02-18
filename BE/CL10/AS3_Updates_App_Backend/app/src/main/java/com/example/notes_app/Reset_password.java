@@ -22,10 +22,10 @@ public class Reset_password extends AppCompatActivity {
         setContentView(R.layout.activity_reset_password);
 
         oldPassword = findViewById(R.id.oldPassword);
-        newPassword = findViewById(R.id.newPassword);
-        reNewPassword = findViewById(R.id.reNewPassword);
+        newPassword = findViewById(R.id.password);
+        reNewPassword = findViewById(R.id.rePassword);
 
-        change = findViewById(R.id.change);
+        change = findViewById(R.id.delAcc);
         cancel = findViewById(R.id.cancel);
 
         sessionManager  = new SessionManager(this);

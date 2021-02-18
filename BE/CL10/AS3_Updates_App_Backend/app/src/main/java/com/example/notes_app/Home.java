@@ -54,6 +54,15 @@ public class Home extends AppCompatActivity {
                     Toast.makeText(Home.this,e.toString(), Toast.LENGTH_LONG).show();
                 }
                 return true;
+             case R.id.deleteUser:
+                try {
+                    Intent intent = new Intent(Home.this, Delete_Account.class);
+                    startActivity(intent);
+                }catch(Exception e){
+                    Toast.makeText(Home.this,e.toString(), Toast.LENGTH_LONG).show();
+                }
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }

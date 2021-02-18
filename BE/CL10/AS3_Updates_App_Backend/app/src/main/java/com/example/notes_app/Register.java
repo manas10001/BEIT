@@ -32,7 +32,7 @@ public class Register extends AppCompatActivity {
             startActivity(intent);
         }
 
-        goto_login = findViewById(R.id.change);
+        goto_login = findViewById(R.id.delAcc);
         mail = findViewById(R.id.email);
         pass = findViewById(R.id.password);
         repass = findViewById(R.id.repassword);
