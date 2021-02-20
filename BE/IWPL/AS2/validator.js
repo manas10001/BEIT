@@ -74,25 +74,32 @@ function validateRegisterForm(){
 
 function validateSelect(arg){
     var dat = document.getElementById(arg).value;
-    if(dat!="select")
+    console.log(dat);
+    if(dat!="select"){
         document.getElementById(arg).style.border = "1px solid green";
-    else
+        return true;
+    }else{    
         document.getElementById(arg).style.border = "1px solid red";
+        return false;
+    }
 }
 
 function validateAddExp(){
     //entire form validation
 
-    if(!liveValidateBlank("jobTitle") || !liveValidateBlank("company") || !liveValidateBlank("application") || !liveValidateBlank("technical") || !liveValidateBlank("hr") || !liveValidateBlank("tips") ){
+    if(!liveValidateBlank("jobTitle") || !liveValidateBlank("company") || !liveValidateBlank("application") || !liveValidateBlank("technical") || !liveValidateBlank("hr") || !liveValidateBlank("tips") || !validateSelect("category") || !validateSelect("profile")){
         liveValidateBlank("jobTitle");
         liveValidateBlank("company");
         liveValidateBlank("application");
         liveValidateBlank("technical");
         liveValidateBlank("hr");
         liveValidateBlank("tips");
+        validateSelect("category");
+        validateSelect("profile");
+
         alert("All fields are required!");
         return false;
     }
-    alert("Sucess!");
+    alert("Sucess Data inserted!");
     return true;
 }
