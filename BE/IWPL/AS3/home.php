@@ -36,7 +36,7 @@
                 </div>
                 <div class="card-body">
                     <div class="card-title">
-                        <strong>Welcome to IED</strong>
+                        <strong>Welcome to IED <?php echo $_SESSION['username'];?></strong>
                     </div>
                     <div class="card-content">
                         Login Success!

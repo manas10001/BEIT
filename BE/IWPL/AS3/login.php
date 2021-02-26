@@ -7,23 +7,24 @@
 	}else{
 		if(isset($_POST) && !empty($_POST))
 		{
-		    $name=$_POST['login'];
-		    $pass=$_POST['password'];
+		    $name = $_POST['login'];
+		    $pass = $_POST['password'];
 
-		    $query="SELECT * FROM users WHERE username='$name' AND password='$pass'";
-		    $result=mysqli_query($con,$query);
+		    $query = "SELECT * FROM users WHERE username='$name' AND password='$pass'";
+		    $result = mysqli_query($con,$query);
 		    
-		    $cnt=@mysqli_num_rows($result);
+		    $cnt = @mysqli_num_rows($result);
 		    
-		    if($cnt==1){
+		    if($cnt == 1){
 			echo 'welcome0';
 			
 			$_SESSION['username']=$name;
 			header("Location: ./home.php");
+
 		    }else{
-			echo "<script>alert('Invalid credentials');</script>";
-			header("Location: ./loginpage.php");
-			die();
+				echo "<script>alert('Invalid credentials');</script>";
+				header("Location: ./loginpage.php");
+				die();
 		    }
 		}
 	}
