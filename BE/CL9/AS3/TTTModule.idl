@@ -1,0 +1,7 @@
+module TTTModule
+{
+    interface TTT
+    {
+        string process_string(in string str);
+    };
+};

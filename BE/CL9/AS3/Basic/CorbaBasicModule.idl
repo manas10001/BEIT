@@ -1,0 +1,7 @@
+module CorbaBasicModule
+{
+    interface CorbaBasic
+    {
+        string process_string(in string str);
+    };
+};
