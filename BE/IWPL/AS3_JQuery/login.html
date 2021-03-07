@@ -26,10 +26,10 @@
                             <fieldset id="fs1">
                                 <legend>Account Details</legend>
                                 <label class="labels">Login ID:*</label><br>
-                                <input class="inputs" type="text" id="login" name="login" onkeyup="liveValidateBlank('login'); liveValidateStr('login');" placeholder="Login-ID">
+                                <input class="inputs" type="text" id="login" name="login" placeholder="Login-ID">
                                 
                                 <label class="labels">Password:*</label><br>
-                                <input class="inputs" type="password" id="password" name="pass" onkeyup="liveValidateBlank('password'); lengthValidate('password',8);" placeholder="Password">
+                                <input class="inputs" type="password" id="password" name="pass" placeholder="Password">
 
                             </fieldset>
                          <br><br>
@@ -40,6 +40,36 @@
                 <a class="link" href="./register.html">Not a member? Register!</a>
             </div>
         </div>
+        <script type="text/javascript" src="./jquery.min.js"></script>
         <script type="text/javascript" src="./validator.js"></script>
+        <script>
+            $(document).ready(function(){
+
+                $('#login').keyup(function(){
+                    let data = $(this).val();
+                    var reg=/^[A-Za-z][A-Za-z\s]*$/;
+                    
+                    if(data.length == 0)
+                        $(this).css("border", "1px solid red");
+                    else{
+                        $(this).css("border", "1px solid green");
+                        
+                        if(reg.test(data)==true)
+                            $(this).css("border", "1px solid green");
+                        else
+                            $(this).css("border", "1px solid red");
+                    }
+                });
+
+                $('#password').keyup(function(){
+                    let data = $(this).val();
+                    if(data.length < 8)
+                        $(this).css("border", "1px solid red");
+                    else
+                        $(this).css("border", "1px solid green");
+                });
+
+            });
+        </script>
     </body>
 </html>

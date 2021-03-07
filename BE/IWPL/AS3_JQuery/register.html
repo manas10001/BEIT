@@ -47,5 +47,24 @@
             </div>
         </div>
         <script type="text/javascript" src="./validator.js"></script>
+        <script>
+            $(document).ready(function(){
+                $('input').keyup(function(){
+                    let data = $(this).val();
+                    var reg=/^[A-Za-z][A-Za-z\s]*$/;
+                    
+                    if(data.length == 0)
+                        $(this).css("border", "1px solid red");
+                    else{
+                        $(this).css("border", "1px solid green");
+                        
+                        if(reg.test(data)==true)
+                            $(this).css("border", "1px solid green");
+                        else
+                            $(this).css("border", "1px solid red");
+                    }
+                });
+            });
+        </script>
     </body>
 </html>
