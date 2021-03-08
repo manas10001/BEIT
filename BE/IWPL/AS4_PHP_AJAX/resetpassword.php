@@ -32,31 +32,68 @@
             <div class="card card-md">
                 <div class="card-body">
                     <div class="card-title">
-                        <strong>Login</strong>
+                        <strong>Reset Password</strong>
                     </div>
                     <div class="forms">
-                        <form action="login.php" method="post" id="loginForm">
+                        <form action="#" method="post">
                             <fieldset id="fs1">
                                 <legend>Account Details</legend>
-                                <label>Login ID:*</label><br>
-                                <input type="text" id="login" name="login" onkeyup="liveValidateBlank('login'); liveValidateStr('login');" placeholder="Login-ID">
-                                
-                                <label>Password:*</label><br>
-                                <input type="password" id="password" name="password" onkeyup="liveValidateBlank('password'); lengthValidate('password',8);" placeholder="Password">
-
+                                <label>Email ID:*</label><br>
+                                <input type="text" id="login" name="login" onkeyup="liveValidateBlank('login'); validateEmail('login');" placeholder="Email-ID">
                             </fieldset>
                          <br><br>
-                         <!--<input type="submit" class="logbtn" value="Log In">-->
-                         <Button type="button" class="logbtn" onclick="return validateLoginForm();">Log In</Button><br>
-                         
+                         <input type="submit" class="logbtn" value="Get OTP">
                        </form>
                     </div>
                 </div>
-                
-                <a class="link" href="./resetpassword.php" style="float:left; margin-left:20">Reset Password!</a>
-                <a class="link" href="./registerpage.php" style="float:right; margin-right:20">Not a member? Register!</a>
+                <a class="link" href="./registerpage.php">Not a member? Register!</a>
             </div>
         </div>
+        
+        <?php
+		if(isset($_POST) && !empty($_POST)){
+			$otp = mt_rand(100000, 999999);
+			$email=$_POST['login'];
+			
+			require 'dbconn.php';
+			
+			//validate email it should be in db
+			
+			$query="SELECT * FROM users WHERE email='$email'";
+			$result=mysqli_query($con,$query);
+
+			$cnt=mysqli_num_rows($result);
+
+			echo " err: ".$cnt;//mysqli_error($con);
+
+			if($cnt >= 1){
+			
+				$headers = 'From: mnpatil155137@gmail.com';
+				$fullText = "Hello user, Use this OTP to reset your password for IED: ".$otp;
+				if(mail($email, "Reset Password", $fullText, $headers)){
+					//store otp in db
+			
+					$res = mysqli_query($con,"insert into otp(email, otp) values('$email','$otp')");
+		
+					if($res){
+						//redirct 
+						header("Location: ./changePass.php?email=".$email);
+					} else {
+						echo "<script>alert('Coudnt send otp to email try again!!!');</script>";
+				
+					}
+				}else{ 
+					echo "<script>alert('Mail not sent something went wrong!')</script>";			
+				
+				}	
+			}else{
+				echo "<script>alert('No such user account in system!')</script>";
+				//echo "er3";
+			}
+		}
+	?>
+
+        
         <script type="text/javascript" src="./validator.js"></script>
     </body>
 </html>

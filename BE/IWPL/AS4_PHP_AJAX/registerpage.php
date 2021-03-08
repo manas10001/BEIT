@@ -39,7 +39,7 @@
                             <fieldset id="fs1">
                                 <legend>Account Details</legend>
                             <label>Uesrname:*</label><br>
-                            <input type="text" id="login" name="login" autocomplete="off" onkeyup="liveValidateBlank('login'); liveValidateStr('login');" placeholder="Username">
+                            <input type="text" id="login" name="login" autocomplete="off" onkeyup="liveValidateStr('login'); liveValidateUsername(this.value);" placeholder="Username">
                                 
                             <label>Email ID:*</label><br>
                             <input type="email" id="mail" name="mail" onkeyup="liveValidateBlank('mail'); validateEmail('mail');" placeholder="abc@h1.com">
@@ -60,5 +60,24 @@
             </div>
         </div>
         <script type="text/javascript" src="./validator.js"></script>
+        <script>
+	function liveValidateUsername(username) {
+	  if (username.length == 0) {
+		document.getElementById("login").style.border = "1px solid red";
+	  } else {
+	    var xmlhttp = new XMLHttpRequest();
+	    xmlhttp.onreadystatechange = function() {
+	      if (this.readyState == 4 && this.status == 200) {
+	      	if(this.responseText == "invalid")
+			document.getElementById("login").style.border = "1px solid red";
+		else
+			document.getElementById("login").style.border = "1px solid green";
+	      }
+	    };
+	    xmlhttp.open("GET", "checkusername.php?username=" + username, true);
+	    xmlhttp.send();
+	  }
+	}
+	</script>
     </body>
 </html>
