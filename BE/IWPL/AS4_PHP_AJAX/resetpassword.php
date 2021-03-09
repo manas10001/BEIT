@@ -61,7 +61,10 @@
 			
 			$query="SELECT * FROM users WHERE email='$email'";
 			$result=mysqli_query($con,$query);
-
+	
+			$row = mysqli_fetch_assoc($result);
+			$unme = $row['username'];		
+			
 			$cnt=mysqli_num_rows($result);
 
 			echo " err: ".$cnt;//mysqli_error($con);
@@ -69,12 +72,23 @@
 			if($cnt >= 1){
 			
 				$headers = 'From: mnpatil155137@gmail.com';
-				$fullText = "Hello user, Use this OTP to reset your password for IED: ".$otp;
+				$fullText = "Hello user, Use this OTP to reset your password for username: '$unme' : ".$otp;
 				if(mail($email, "Reset Password", $fullText, $headers)){
-					//store otp in db
 			
-					$res = mysqli_query($con,"insert into otp(email, otp) values('$email','$otp')");
-		
+					//if there is already otp in db then replace it
+					$qupdate = "update otp set otp='$otp' where email='$email'";
+					$qins = "insert into otp(email, otp) values('$email','$otp')";
+			
+					//search if otp exists for email
+					$otpexists = mysqli_query($con, "select * from otp where email='$email'");
+			
+					//store otp in db
+					if(mysqli_num_rows($otpexists) > 0){
+						$res = mysqli_query($con, $qupdate);
+					}else{
+						$res = mysqli_query($con, $qins);
+					}
+					echo mysqli_error($con);
 					if($res){
 						//redirct 
 						header("Location: ./changePass.php?email=".$email);

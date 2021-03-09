@@ -72,6 +72,6 @@ function validateRegisterForm(){
         }
     }
     
-    	document.getElementById("registerForm").submit();
+    document.getElementById("registerForm").submit();
     
 }

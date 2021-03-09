@@ -1,8 +1,8 @@
 <?php
 	require 'dbconn.php';
-	if(isset($_GET) && !empty($_GET))
+	if(isset($_POST) && !empty($_POST))
 	{
-	    $name=$_GET['username'];
+	    $name=$_POST['username'];
 
 	    $query="SELECT * FROM users WHERE username='$name'";
 	    $result=mysqli_query($con,$query);

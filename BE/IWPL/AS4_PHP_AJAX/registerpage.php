@@ -59,25 +59,39 @@
                 <a class="link" href="./loginpage.php">Already Registered? Login!</a>
             </div>
         </div>
+        
         <script type="text/javascript" src="./validator.js"></script>
+        
+         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        
         <script>
 	function liveValidateUsername(username) {
 	  if (username.length == 0) {
 		document.getElementById("login").style.border = "1px solid red";
 	  } else {
-	    var xmlhttp = new XMLHttpRequest();
-	    xmlhttp.onreadystatechange = function() {
-	      if (this.readyState == 4 && this.status == 200) {
-	      	if(this.responseText == "invalid")
-			document.getElementById("login").style.border = "1px solid red";
-		else
-			document.getElementById("login").style.border = "1px solid green";
-	      }
-	    };
-	    xmlhttp.open("GET", "checkusername.php?username=" + username, true);
-	    xmlhttp.send();
-	  }
+//	    	console.log("sending ajax req");
+		$.ajax({
+			
+			method: "POST",
+			url: "checkusername.php",
+			data: { username: username},
+			cache: false,
+			beforeSend: function() {
+//				console.log("b4");
+				document.getElementById("login").style.border = "1px solid red";
+			},
+			success: function(response) {
+//				console.log(response);
+				if (response === "invalid") 
+					document.getElementById("login").style.border = "1px solid red";
+				else
+					document.getElementById("login").style.border = "1px solid green";
+			}
+		});
+	}
 	}
 	</script>
+	
+	
     </body>
 </html>
