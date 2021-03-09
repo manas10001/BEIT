@@ -9,24 +9,30 @@ class TTTImpl extends TTTPOA{
         super();
     }    
 
-    public String process_string(String tmp){
-        StringBuffer str = new StringBuffer(tmp);    
-        str.reverse();
-        return (("Reversed string is: " + str));
+    /* Helper methods to convert arraylist to string and around */
+
+    public ArrayList<Integer> convertToArlst(String str){
+        ArrayList<Integer> ar = new ArrayList<Integer>();
+
+        for(int i = 0; i < str.length(); i++){
+            ar.add(Character.getNumericValue(str.charAt(i)));
+        }
+
+        return ar;
     }
 
+    /* TTT methods to be ported to be corba compatible */
 
-    /*
-    *TTT methods to be ported to be corba compatible*/
-
-    public boolean isValidMove(int move, ArrayList<Integer> board){
-        if(board.get(move) == 0)
+    public boolean isValidMove(int move, String boardStr){
+        ArrayList<Integer> board = convertToArlst(boardStr);
+        if(board.get(move-1) == 0)
             return true;
         return false;
     }
 
     //chooses the servers move and returns its position
-    public int serverMove(ArrayList<Integer> board){
+    public int serverMove(String boardStr){
+        ArrayList<Integer> board = convertToArlst(boardStr);
         //choose a field and place your token
         //currently server just puts token in first available slot
         for(int i = 0; i < 9; i++){
@@ -38,7 +44,8 @@ class TTTImpl extends TTTPOA{
     }
 
     //returns how full is the board
-    public int howFull(ArrayList<Integer> board){
+    public int howFull(String boardStr){
+        ArrayList<Integer> board = convertToArlst(boardStr);
         //cout will hold how many blank cells are left
         int count = 0;
         for(int i : board){
@@ -55,7 +62,8 @@ class TTTImpl extends TTTPOA{
         1 = client
         2 = server
     */
-    public int determineWinner(ArrayList<Integer> board){
+    public int determineWinner(String boardStr){
+        ArrayList<Integer> board = convertToArlst(boardStr);
         int result = 0;
 
         if(board.get(0) == board.get(1) && board.get(1) == board.get(2))
@@ -83,7 +91,7 @@ class TTTImpl extends TTTPOA{
             result = board.get(2);
 
         //if we cant find a winner and board is full its a tie
-        if(result == 0 && howFull(board) == 9)
+        if(result == 0 && howFull(boardStr) == 9)
             result = -1;
 
         return result;

@@ -2,6 +2,9 @@ module TTTModule
 {
     interface TTT
     {
-        string process_string(in string str);
+        long howFull(in string boardStr);
+        boolean isValidMove(in long move, in string boardStr);
+        long serverMove(in string boardStr);
+        long determineWinner(in string boardStr);
     };
 };
