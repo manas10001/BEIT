@@ -6,7 +6,7 @@ import java.util.*;
 
 class TTTClient{
 
-    /* Helper methods to convert arraylist to string and around */
+    /* Helper method to convert arraylist to string */
     public String convertToStr(ArrayList<Integer> ar){
         StringBuilder sb = new StringBuilder();
 
@@ -18,9 +18,9 @@ class TTTClient{
 
 
     /* TTT methods start*/
-    //print board
+    //prints board
     public void printBoard(ArrayList<Integer> board){
-        // clearTerm();
+       
         System.out.println("Current Board: \n");
         for(int i = 0; i < 9; i++){
             char toPrint = (char) (i+1+'0');
@@ -37,9 +37,11 @@ class TTTClient{
         }
     }
 
-    // //handles win lose or tie
+    //handles win lose or tie
+    //returns false otherwise
     public boolean handleWinner(ArrayList<Integer> board, TTT TTTimpl){
     
+        //there can be win lose or tie only if at least 5 moves have been made
         if(TTTimpl.howFull(convertToStr(board)) >= 5){
 
             System.out.println("-----------------------------Checking for winner");
@@ -59,6 +61,12 @@ class TTTClient{
         return false;
     }
 
+    /*
+        3*3 board
+        Clients position is marked 1
+        Servers position is marked 2
+        Empty positions are marked 0
+    */
     public void letsPlay(ArrayList<Integer> board, TTT TTTimpl, Scanner sc){
         boolean keepPlaying = true;
         int move;
@@ -66,6 +74,7 @@ class TTTClient{
         while(keepPlaying){
             printBoard(board);
 
+            //handle winner returns true if there is a winner or tie
             if(handleWinner(board, TTTimpl)){
                 keepPlaying = false;
                 continue;
@@ -81,6 +90,7 @@ class TTTClient{
                 System.out.println("-----------------------------Board after your move");
                 printBoard(board);
         
+                //handle winner returns true if there is a winner or tie
                 if(handleWinner(board, TTTimpl)){
                     keepPlaying = false;
                     continue;
@@ -92,11 +102,12 @@ class TTTClient{
             System.out.println("-----------------------------Server will play");
             int sMove = TTTimpl.serverMove(convertToStr(board));
             // System.out.println("-----------------------------Server takes"+ sMove);
+            //set servers marker in board
             board.set(sMove, 2);
 
         }
     }
-    /* TTT methods enc*/
+    /* TTT methods end*/
 
     public static void main(String args[])
     {
@@ -107,29 +118,19 @@ class TTTClient{
         
         try
         {
-            // initialize the ORB object request broker
+            // Creates and initializes an ORB instance
             org.omg.CORBA.ORB orb = org.omg.CORBA.ORB.init(args,null);
 
+            // get the root naming context
             org.omg.CORBA.Object objRef = orb.resolve_initial_references("NameService");
             NamingContextExt ncRef = NamingContextExtHelper.narrow(objRef);
             
+            // resolve the Object Reference in Naming
             String name = "TTT";
-
-            // narrow converts generic object into string type 
             TTT TTTimpl = TTTHelper.narrow(ncRef.resolve_str(name));
             
-
-
+            //call to game function
             tc.letsPlay(board, TTTimpl, sc);
-
-
-
-            // System.out.println();
-
-            //remote function call
-            // String tempStr = TTTimpl.process_string(str);
-            
-            // System.out.println(tempStr);
         }
         catch(Exception e)
         {

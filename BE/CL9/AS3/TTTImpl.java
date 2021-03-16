@@ -9,8 +9,7 @@ class TTTImpl extends TTTPOA{
         super();
     }    
 
-    /* Helper methods to convert arraylist to string and around */
-
+    /* Helper method to convert string to arraylist */
     public ArrayList<Integer> convertToArlst(String str){
         ArrayList<Integer> ar = new ArrayList<Integer>();
 
@@ -21,7 +20,7 @@ class TTTImpl extends TTTPOA{
         return ar;
     }
 
-    /* TTT methods to be ported to be corba compatible */
+    /* TTT methods ported to be corba compatible */
 
     public boolean isValidMove(int move, String boardStr){
         ArrayList<Integer> board = convertToArlst(boardStr);
@@ -69,26 +68,27 @@ class TTTImpl extends TTTPOA{
         if(board.get(0) == board.get(1) && board.get(1) == board.get(2))
             result = board.get(0);
         
-        if(board.get(3) == board.get(4) && board.get(4) == board.get(5))
+        if(board.get(3) == board.get(4) && board.get(4) == board.get(5) && result == 0)
             result = board.get(3);
 
-        if(board.get(6) == board.get(7) && board.get(7) == board.get(8))
+        if(board.get(6) == board.get(7) && board.get(7) == board.get(8) && result == 0)
             result = board.get(6);
 
-        if(board.get(0) == board.get(3) && board.get(3) == board.get(6))
+        if(board.get(0) == board.get(3) && board.get(3) == board.get(6) && result == 0)
             result = board.get(0);
 
-        if(board.get(1) == board.get(4) && board.get(4) == board.get(7))
+        if(board.get(1) == board.get(4) && board.get(4) == board.get(7) && result == 0)
             result = board.get(1);
 
-        if(board.get(2) == board.get(5) && board.get(5) == board.get(8))
+        if(board.get(2) == board.get(5) && board.get(5) == board.get(8) && result == 0)
             result = board.get(2);
 
-        if(board.get(0) == board.get(4) && board.get(4) == board.get(8))
+        if(board.get(0) == board.get(4) && board.get(4) == board.get(8) && result == 0)
             result = board.get(0);
 
-        if(board.get(2) == board.get(4) && board.get(4) == board.get(6))
+        if(board.get(2) == board.get(4) && board.get(4) == board.get(6) && result == 0)
             result = board.get(2);
+
 
         //if we cant find a winner and board is full its a tie
         if(result == 0 && howFull(boardStr) == 9)
