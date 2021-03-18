@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="76dp"
         android:layout_marginBottom="115dp"
-        android:src="@drawable/ic_baseline_autorenew_24"
+        android:src="@mipmap/ic_fan_foreground"
         app:layout_constraintBottom_toTopOf="@+id/dsb"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
