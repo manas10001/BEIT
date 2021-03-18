@@ -8,6 +8,6 @@ public class AuthenticatorImpl extends UnicastRemoteObject implements Authentica
 
     //returns authentication status true or false
     public boolean auth(String username, String password) throws RemoteException{
-            return (username.equals("manas") && password.equals("password"));
+            return (username.equals("admin") && password.equals("password"));
     }
 }
