@@ -26,17 +26,17 @@
                             <fieldset id="fs1">
                                 <legend>Account Details</legend>
                             <label class="labels">Uesrname:*</label><br>
-                            <input class="inputs" type="text" id="login" name="login" autocomplete="off" onkeyup="liveValidateBlank('login'); liveValidateStr('login');" placeholder="Username">
+                            <input class="inputs" type="text" id="login" name="login" autocomplete="off" placeholder="Username">
                                 
                             <label class="labels">Email ID:*</label><br>
-                            <input class="inputs" type="email" id="mail" name="mail" onkeyup="liveValidateBlank('mail'); validateEmail('mail');" placeholder="abc@h1.com">
+                            <input class="inputs" type="email" id="mail" name="mail" placeholder="abc@h1.com">
 
                             <label class="labels">Password:*</label><br>
-                            <input class="inputs" type="password" id="password" name="pass" onkeyup="liveValidateBlank('password'); lengthValidate('password',8);" placeholder="Password">
+                            <input class="inputs" type="password" id="password" name="pass" placeholder="Password">
                             
                             <label class="labels">Retype Password:*</label><br>
-                            <input class="inputs" type="password" id="repassword" name="repass" onkeyup="liveValidateBlank('repassword'); lengthValidate('repassword',8)" placeholder="Retype Password">
-                            
+                            <input class="inputs" type="password" id="repassword" name="repass" placeholder="Retype Password">
+                            <!-- onkeyup="liveValidateBlank('repassword'); lengthValidate('repassword',8)" -->
                              </fieldset>
                          <br><br>
                          <Button type="button" class="logbtn" onclick="return validateRegisterForm();">Register</Button>
@@ -46,10 +46,11 @@
                 <a class="link" href="./login.html">Already Registered? Login!</a>
             </div>
         </div>
+        <script type="text/javascript" src="./jquery.min.js"></script>
         <script type="text/javascript" src="./validator.js"></script>
         <script>
             $(document).ready(function(){
-                $('input').keyup(function(){
+                $('#login').keyup(function(){
                     let data = $(this).val();
                     var reg=/^[A-Za-z][A-Za-z\s]*$/;
                     
@@ -63,6 +64,23 @@
                         else
                             $(this).css("border", "1px solid red");
                     }
+                });
+
+                $('#password, #repassword').keyup(function(){
+                    let data = $(this).val();
+                    if(data.length < 8)
+                        $(this).css("border", "1px solid red");
+                    else
+                        $(this).css("border", "1px solid green");
+                });
+
+                $('#mail').keyup(function(){
+                    let data = $(this).val();
+                    var reg = /^([A-Za-z0-9_\-\.])+@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+                    if(reg.test(data) == true)
+                        $(this).css("border", "1px solid green");
+                    else
+                        $(this).css("border", "1px solid red");
                 });
             });
         </script>
