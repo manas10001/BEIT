@@ -20,3 +20,5 @@ Experiments/
 
 #ignore datasets
 *.csv
+/BE/IWPL/AS6_JSP/nbproject/private/
+/BE/IWPL/AS6_JSP/build/
