@@ -123,7 +123,7 @@ public class Ring{
 					System.out.print("Which process will initiate election?: ");
 					process_no = sc.nextInt();
 					ring.initElection(process_no);
-					ring.displayProcesses();
+					//ring.displayProcesses();
 					break;
 					
 				case 5: 
