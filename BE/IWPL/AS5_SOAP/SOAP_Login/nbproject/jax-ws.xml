@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jax-ws xmlns="http://www.netbeans.org/ns/jax-ws/1">
+  <services>
+    <service name="LoginService">
+      <implementation-class>user.LoginService</implementation-class>
+    </service>
+    <service name="LoginHandler">
+      <implementation-class>user.LoginHandler</implementation-class>
+    </service>
+    <service name="RegisterHandler">
+      <implementation-class>user.RegisterHandler</implementation-class>
+    </service>
+  </services>
+  <clients/>
+  <jsr109>false</jsr109>
+</jax-ws>
