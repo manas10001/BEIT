@@ -22,3 +22,6 @@ Experiments/
 *.csv
 /BE/IWPL/AS6_JSP/nbproject/private/
 /BE/IWPL/AS6_JSP/build/
+/BE/IWPL/SOAP_Login/nbproject/private/
+/BE/IWPL/SOAP_Login/dist/
+/BE/IWPL/SOAP_Login/build/
