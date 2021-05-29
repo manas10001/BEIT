@@ -1,0 +1,85 @@
+body {
+  background-color: whitesmoke;
+}
+/* card */
+
+.content {
+  position: relative;
+  margin-top: 100px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.card {
+  background-color: #fff;
+  margin-bottom: 40px;
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: 10px 10px 20px 10px rgba(0, 0, 0, 0.09);
+  padding-bottom: 20px;
+}
+.card:hover{
+    box-shadow: 10px 10px 20px 10px rgba(0, 0, 0, 0.25);
+}
+.card-md{
+    width: 900px;
+}
+.card-body {
+  padding: 20px;
+}
+.card-title {
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+.card-content {
+  font-size: 15px;
+  text-align: justify;
+}
+strong{
+  font-size: large;
+}
+/* card */
+
+/* login/register */
+.forms{
+    font-size: 15px;
+    text-align: center;
+}
+input{
+    border-radius: 10px;
+    color: black;
+    padding: 20px 10px;
+    border: 1px solid #ccc;
+    min-width: 45vw;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+input:hover{
+    display: inline-block;
+    box-shadow: 0 0 2px rgba(0,0,0,0.6);
+}
+.logbtn{
+    background: rgb(255,255,255); 
+    border: 1px solid #2AA600;
+    border-radius: 10px;
+    color: rgb(0, 0, 0);
+    padding: 10px 15px;
+    min-width: 120px;
+    text-decoration: none;
+    display: inline-block;
+    margin: 4px 2px;
+}
+
+.logbtn:hover{
+    background: #2AA600;
+    color: rgb(255, 255, 255);
+}
+input:focus{
+    outline: none;
+}
+/* login/register */

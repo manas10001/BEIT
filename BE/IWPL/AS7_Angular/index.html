@@ -1,0 +1,44 @@
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div ng-app="myApp" ng-controller="myCtrl" ng-init="bal=0;">
+            <div class="content">
+                <div class="card card-md">
+                    <div class="card-body">
+                        <div class="card-title">
+                            <strong style="font-size: 40px;">Billing System<br><br></strong>
+                            <strong>Current Balance <p ng-model="bal">{{bal}}</p></strong>
+                        </div>
+                        <div class="forms">
+                            <form id="loginForm">
+                                    
+                                    <input type="number" id="amt" ng-model="amt" placeholder="Enter Amount">
+                                                            
+                            <br><br>
+                            
+                            <Button type="button" class="logbtn" ng-click="sum(bal,amt)">Credit</Button>
+                            <Button type="button" class="logbtn" ng-click="sub(bal,amt)">Debit</Button><br>
+                            
+                        </form>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        <script>
+            var myApp = angular.module('myApp', []);
+            myApp.controller("myCtrl", function ($scope) {
+                $scope.sum = function (num1, num2) {
+                    $scope.bal = parseInt(num1) + parseInt(num2);
+                }
+                $scope.sub = function (num1, num2) {
+                    $scope.bal = parseInt(num1) - parseInt(num2);
+                }
+            });
+        </script>
+    </body>
+</html>
