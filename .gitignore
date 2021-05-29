@@ -1,5 +1,9 @@
 #ignore Experiments folder
 Experiments/
+
+#ignore activemq installation
+activemq/
+
 #ignore class and .out files
 *.class
 *.out
@@ -30,3 +34,4 @@ Experiments/
 /BE/IWPL/SOAP_Login/nbproject/private/
 /BE/IWPL/SOAP_Login/dist/
 /BE/IWPL/SOAP_Login/build/
+
