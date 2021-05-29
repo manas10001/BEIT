@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<endpoints version="2.0" xmlns="http://java.sun.com/xml/ns/jax-ws/ri/runtime">
+  <endpoint implementation="user.LoginService" name="LoginService" url-pattern="/LoginService"/>
+  <endpoint implementation="user.LoginHandler" name="LoginHandler" url-pattern="/LoginHandler"/>
+  <endpoint implementation="user.RegisterHandler" name="RegisterHandler" url-pattern="/RegisterHandler"/>
+</endpoints>
