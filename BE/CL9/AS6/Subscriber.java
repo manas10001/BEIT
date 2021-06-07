@@ -20,6 +20,7 @@ public class Subscriber {
         Topic topic = session.createTopic("PubSubMessage");
         
         MessageConsumer consumer = session.createConsumer(topic);
+		
         for(int i = 0; i < 100; i++) {
 		    MessageListener listener = new MessageListener(){
 		        public void onMessage(Message message){

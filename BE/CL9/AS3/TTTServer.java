@@ -12,22 +12,21 @@ public class TTTServer {
             // Creates and initializes an ORB instance
             org.omg.CORBA.ORB orb = org.omg.CORBA.ORB.init(args,null);
 
-            // Gets a reference to the root POA and activates the POAManager
             POA rootPOA = POAHelper.narrow(orb.resolve_initial_references("RootPOA"));
             rootPOA.the_POAManager().activate();
 
-            // creating the  object of implementation
+
             TTTImpl cbimpl = new TTTImpl();
             
-            // get the object reference from the servant class
             org.omg.CORBA.Object ref = rootPOA.servant_to_reference(cbimpl);
+
             TTT helper_ref = TTTModule.TTTHelper.narrow(ref);
 
             // get the root naming context
             org.omg.CORBA.Object objRef = orb.resolve_initial_references("NameService");
             NamingContextExt ncRef = NamingContextExtHelper.narrow(objRef);
             
-            // bind our Object Reference in Naming
+
             String name = "TTT";
             NameComponent path[] = ncRef.to_name(name);
             ncRef.rebind(path,helper_ref);

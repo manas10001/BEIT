@@ -71,7 +71,7 @@ public class Ring{
 			while(temp != process_no - 1){
 				if(processes[temp]){
 					pid.add(temp+1);
-					System.out.print("Process P["+process_no+"] sending following list:");
+					System.out.print("Process P["+(temp+1)+"] sending following list:");
 					displayArrayList(pid);
 				}
 				temp = (temp+1) % max_processes;

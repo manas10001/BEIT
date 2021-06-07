@@ -57,7 +57,7 @@ public class Mpi_Advance {
         //Scatter(senddata,start,end,datatype,receivingtargetdata,start,end,datatype,source process)
         MPI.COMM_WORLD.Scatter(data_ar,0,chunk,MPI.DOUBLE,recieve_buffer,0,chunk,MPI.DOUBLE,root);
 
-        BigDecimal sum = new BigDecimal(0);;
+        BigDecimal sum = new BigDecimal(0);
 
         for(int i=0;i<chunk;i++){
 
@@ -75,9 +75,6 @@ public class Mpi_Advance {
 
         if(rank == root)
         {
-
-            
-
             System.out.println("Sum of array: ");
             BigDecimal fsum = new BigDecimal(0);
             for(int i = 0; i< size; i++){

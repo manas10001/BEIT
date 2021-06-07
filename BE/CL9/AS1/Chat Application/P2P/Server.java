@@ -15,17 +15,13 @@ class Server{
 			//register server socket and await connection from client
 			serversock = new ServerSocket(port);
 			
-			//wait for client to connect and accept it when it does
 			sock = serversock.accept();
 			System.out.println("Client Connected!");
 			
-			//read the inputstream from socket
 			dsin = new DataInputStream(new BufferedInputStream(sock.getInputStream()));
-			
-			//stream to read msg from cmdline
+						
 			cmdin = new DataInputStream(System.in);
 
-			//stream to write to socket
 			dsout = new DataOutputStream(sock.getOutputStream());
 			
 			mymsg = "";
@@ -42,6 +38,7 @@ class Server{
 					break;
 				
 				//write our msg
+				System.out.print("Enter Message: ");
 				mymsg = cmdin.readLine();
 				dsout.writeUTF(mymsg);				
 				

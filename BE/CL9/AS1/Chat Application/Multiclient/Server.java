@@ -23,10 +23,8 @@ public class Server{
 				//call the handler class to start handling the object
 				ClientHandler clientHandler  = new ClientHandler(sock, clients);
 				
-				//add the client to client list
 				clients.add(clientHandler);
 				
-				//start thread
 				clientHandler.start();
 			}
 		}catch(Exception ex){
@@ -69,7 +67,7 @@ class ClientHandler extends Thread{
 				if(msg.equals("exit"))
 					break;
 				
-				//fwd the message to all other clients
+				//broadcast the message to all other clients
 				System.out.println("log: Sending msg to all clients: "+msg);
 
 				for(ClientHandler ch: clients){

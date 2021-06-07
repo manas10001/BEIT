@@ -15,7 +15,7 @@ class Client{
 			//read data from socket
 			BufferedReader inp = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 			
-			//printwriter to writeto socket
+			//printwriter to write to socket
 			PrintWriter sendmsg = new PrintWriter(sock.getOutputStream(), true);
 			
 			Scanner sc = new Scanner(System.in);
@@ -28,7 +28,6 @@ class Client{
 			ServerResponseHandler srh = new ServerResponseHandler(sock, userName);
 			srh.start();
 			
-			//take client input and send to server
 			do{
 				msg = sc.nextLine();
 				sendmsg.println(userName+": "+msg);

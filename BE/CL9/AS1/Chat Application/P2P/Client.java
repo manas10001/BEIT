@@ -14,13 +14,10 @@ class Client{
 			//register socket for client and sends req to server
 			sock = new Socket("127.0.0.1",port);
 			
-			//read clients input from terminal
 			cmdin = new DataInputStream(System.in);
 					
-			//send output to socket
 			dsout = new DataOutputStream(sock.getOutputStream());
 			
-			//read the inputstream from socket (servers msg)
 			dsin = new DataInputStream(new BufferedInputStream(sock.getInputStream()));
 			
 			mymsg = "";
@@ -29,6 +26,7 @@ class Client{
 			//keep communicating until bye is mentioned by either sides
 			while(!msg.equals("bye")){
 				//send msg to server
+				System.out.print("Enter Message: ");
 				mymsg = cmdin.readLine();
 				dsout.writeUTF(mymsg);
 				
