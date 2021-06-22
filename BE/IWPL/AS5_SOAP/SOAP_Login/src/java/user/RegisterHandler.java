@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
+import javax.jws.WebParam;
 
 /**
  *
@@ -20,8 +21,8 @@ import javax.jws.WebService;
 @WebService
 public class RegisterHandler {
     
-    @WebMethod
-    public boolean registerUser(String username, String password, String email){
+    @WebMethod(operationName = "registerUser")
+    public boolean registerUser(@WebParam(name = "username")String username, @WebParam(name = "password")String password, @WebParam(name = "email")String email){
         try {
             //connecting to databse
             Class.forName("com.mysql.jdbc.Driver");
