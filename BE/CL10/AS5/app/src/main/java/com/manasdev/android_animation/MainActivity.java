@@ -35,6 +35,7 @@ import android.widget.Toast;
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if(fromUser){
+                    //duration range 500 to 2500
                     int rt = 5500-progress;
                     rotate(rt);
                     //Toast.makeText(MainActivity.this, ""+rt,Toast.LENGTH_SHORT).show();
